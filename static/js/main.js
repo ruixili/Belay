@@ -135,5 +135,22 @@ $("#chat-page-more-message-btn").click(function() {
 });
 
 $("#chat-page-send-btn").click(function() {
-    console.log("the user send a message");
+    let channelName = document.getElementById("chat-page-title-name").innerText;
+    let message = document.getElementById("chat-page-send-text-area").value;
+
+    console.log("The user send a message to Channel: " + channelName + " : " + message);
+    $.ajax({
+        async: true,
+        type: "POST",
+        url: "/api/postmessage",
+        data: {
+            "channelName": channelName,
+            "email": "rxli@uchicago.edu", // localStorage?
+            "message": message
+        },
+        success: function(messages) {
+            console.log(messages);
+            document.getElementById("chat-page-send-text-area").value = '';
+        }
+    });
 });

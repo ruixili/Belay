@@ -37,7 +37,7 @@ function channelTemplate(channel) {
     return template
 }
 
-
+// firstLoadMessage
 function firstLoadMessage(channelName) {
 	// load and call getMessage
     console.log("First loading for channel: ", channelName);
@@ -77,6 +77,7 @@ function insertWords(messages) {
     // }
 }
 
+// getMessage
 function getMessage(channelName) {
     let messageIDs = document.querySelectorAll("#msg-id");
     let lastMessageDiv = messageIDs[messageIDs.length - 1];
@@ -84,7 +85,7 @@ function getMessage(channelName) {
     if (lastMessageDiv) {
         lastMessageID = lastMessageDiv.innerText;
     } else {
-        lastMessageID = null;
+        return;
     }
     
     $.ajax({
@@ -97,7 +98,7 @@ function getMessage(channelName) {
         },
         success: function(messages) {
             appendWords(messages);
-            window.setInterval(getMessage(channelName), 1000);
+            // window.setInterval(getMessage(channelName), 1000);
         }
     });
 }

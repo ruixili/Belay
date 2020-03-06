@@ -74,29 +74,13 @@ def moremessage():
     return jsonify("")
 
 
-@app.route('/api/post', methods=['POST'])
-def post():
-    print("----- calling post method!")
-    user = {key: request.form.get(key) for key in request.form}
-    print(user)
-
-    if(user["session_token"] != "12345"):
-        return {}, 403
-
-    if 'title' in user['title'] and 'body' in user['body']:
-        new_post = {
-            "id": len(posts),
-            "title": body['title'],
-            "body": body['body']
-        }
-        posts.insert(0, new_post)
-
-    return jsonify(posts)
-
-
-
-
-
+@app.route('/api/postmessage', methods=['POST'])
+def postmessage():
+    print("----- calling postmessage method!")
+    message = {key: request.form.get(key) for key in request.form}
+    print(message)
+    result = db_manager.postMessage(message)
+    return result
 
 
 
