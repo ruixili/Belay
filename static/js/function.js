@@ -53,7 +53,6 @@ function firstLoadMessage(channelName) {
             console.log("the messages from api" + messages);
             if (!messages || messages.length == 0) {
                 removeMoremessage();
-                return;
             } else {
                 insertWords(messages);
             }
