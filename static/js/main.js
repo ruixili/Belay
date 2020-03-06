@@ -151,7 +151,6 @@ $("#forget-password-btn").click(function() {
             });   
         }
     });
-
 });
 
 /*
@@ -160,6 +159,39 @@ $("#forget-password-btn").click(function() {
 
 $("#change-password-btn").click(function() {
     console.log("the user change the password");
+    let email = $("#change-password-email").val();
+    let password = $("#change-password-password").val();
+    let passwordAgain = $("#change-password-password-again").val();
+
+    if (password != passwordAgain) {
+        alert("The passwords don't match!");
+        return;
+    }
+    console.log(email, password);
+
+    $.ajax({
+        async: true,
+        type: "POST",
+        url: "/api/changepassword",
+        data: {
+            "email": email,
+            "password": password
+        },
+        success: function(status) {
+            let loadPage = new Promise((resolve, reject) => {
+                changePasswordPage.style.display = "none";
+                loginPage.style.display = "block";
+                window.setTimeout(
+                    function() {
+                        resolve("Success!");
+                    }, 500);
+            })
+
+            loadPage.then((successMessage) => {
+                alert(status);
+            });
+        }
+    });
 });
 
 /*
