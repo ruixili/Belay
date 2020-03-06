@@ -1,0 +1,378 @@
+
+/*//////////////////////////////////////////////////////////////////
+[ RESTYLE TAG ]*/
+
+* {
+	margin: 0px; 
+	padding: 0px; 
+	box-sizing: border-box;
+}
+
+body, html {
+	height: 100%;
+	font-family: Arial, sans-serif;
+}
+
+/*---------------------------------------------*/
+a {
+	font-family: Arial;
+	font-size: 20px;
+	line-height: 1.7;
+	color: #666666;
+	margin: 0px;
+	transition: all 0.4s;
+	-webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+}
+
+a:focus {
+	outline: none !important;
+}
+
+a:hover {
+	text-decoration: none;
+  color: #333333;
+}
+
+/*---------------------------------------------*/
+h1,h2,h3,h4,h5,h6 {
+	margin: 0px;
+}
+
+p {
+	font-family: Arial;
+	font-size: 14px;
+	line-height: 1.7;
+	color: #666666;
+	margin: 0px;
+}
+
+ul, li {
+	margin: 0px;
+	list-style-type: none;
+}
+
+
+/*---------------------------------------------*/
+input {
+	outline: none;
+	border: none;
+}
+
+textarea {
+  outline: none;
+  border: none;
+}
+
+/*---------------------------------------------*/
+button {
+	outline: none !important;
+	border: none;
+	background: transparent;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
+iframe {
+	border: none !important;
+}
+
+
+/*//////////////////////////////////////////////////////////////////
+[ Utility ]*/
+.txt1 {
+  font-family: Arial;
+  font-size: 15px;
+  color: #999999;
+  line-height: 1.5;
+}
+
+.txt2 {
+  font-family: Arial;
+  font-size: 15px;
+  color: #57b846;
+  line-height: 1.5;
+}
+
+/*//////////////////////////////////////////////////////////////////
+[ login ]*/
+
+.login-page {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.container-login {
+  width: 100%;  
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  background: #fff;  
+}
+
+.wrap-login {
+  width: 390px;
+  background: #fff;
+}
+
+
+/*------------------------------------------------------------------
+[ Form ]*/
+
+.login-form {
+  width: 100%;
+}
+
+.login-form-title {
+  display: block;
+  font-family: Arial;
+  font-size: 39px;
+  color: #333333;
+  line-height: 1.2;
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+
+/*------------------------------------------------------------------
+[ Input ]*/
+
+.wrap-input {
+  width: 100%;
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #d9d9d9;
+}
+
+.input {
+  font-family: Arial;
+  font-size: 18px;
+  color: #555555;
+  line-height: 1.2;
+
+  display: block;
+  width: 100%;
+  height: 32px;
+  background: transparent;
+  padding: 10px;
+}
+
+
+
+/*------------------------------------------------------------------
+[ Button ]*/
+.container-login-form-btn {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.login-form-login-btn {
+  font-family: Arial;
+  font-size: 16px;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  width: 100%;
+  height: 50px;
+  background-color: #57b846;
+  border-radius: 25px;
+}
+
+.login-form-login-btn:hover  {
+  background-color: #333333;
+  transition: 0.5s;
+}
+
+
+/*------------------------------------------------------------------
+[ sidebar ]*/
+.sidebar {
+  height: 100%;
+  width: 160px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #eee;
+  overflow-x: hidden;
+  padding-top: 20px;
+  padding-left: 10px;
+}
+
+.sidebar-title  {
+  color: #111;
+  padding-left: 3px;
+}
+
+.sidebar a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #818181;
+  display: block;
+}
+
+.sidebar a:hover {
+  color: #57b846;
+  transition: 0.5s;
+}
+
+#sidebar-create-btn {
+  position: fixed;
+  z-index: 1;
+  bottom: 0;
+  padding-bottom: 20px;
+}
+
+/*------------------------------------------------------------------
+[ chat-page ]*/
+.chat-page {
+  margin-left: 140px;
+  font-size: 28px;
+  padding: 0px 10px;
+}
+
+/* title */
+.chat-page-title-container {
+  height: 100%;
+  width: 75%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  background-color: transparent;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+#chat-page-title-name {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 40px;
+  color: #57b846;
+  display: block;
+  border-bottom: 2px solid grey; 
+  margin-right: 20px;
+}
+
+/* content */
+.chat-page-content-big-container {
+  height: 66%;
+  width: 75%;
+  position: fixed;
+  z-index: 1;
+  top: 12%;
+  background-color: transparent;
+  overflow-x: hidden;
+}
+
+#chat-page-content-container {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+}
+
+.chat-page-content {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+  overflow-x: hidden;
+  margin-right: 20px;
+}
+
+.chat-page-content img {
+  float: left;
+  max-width: 30px;
+  width: 100%;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+
+.chat-page-content p {
+  color: #666666;
+  margin: 0px;
+}
+
+.chat-page-content span {
+  float: right;
+  color: #aaa;
+  font-size: 12px;
+}
+
+/* send */
+.chat-page-send-container {
+  height: 20%;
+  width: 75%;
+  position: fixed;
+  z-index: 1;
+  bottom: 0;
+  background-color: transparent;
+  overflow-x: hidden;
+}
+
+.chat-page-send-form-container {
+  border-top: 2px solid grey;
+  margin-right: 20px;
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+}
+
+#chat-page-send-btn {
+  font-family: Arial;
+  font-size: 16px;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 0 20px;
+  width: 60px;
+  height: 30px;
+  background-color: #57b846;
+  border-radius: 20px;
+}
+
+#chat-page-send-btn:hover  {
+  background-color: #333333;
+  transition: 0.5s;
+}
+
+
