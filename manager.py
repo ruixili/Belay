@@ -14,6 +14,28 @@ class dbManager:
             print("success!")
         return conn
 
+
+    def login(self, uesr):
+        return
+
+
+    def signup(self, user):
+        # check validity
+        conn = self.connectDB()
+        cursor = conn.cursor()
+        query = "INSERT INTO users(email, username, password) VALUES(%s, %s, %s)"
+        try:
+            cursor.execute(query, (user['email'], user['username'], user['password']))
+            conn.commit()
+            return "Success!"
+        except Exception as e:
+            print(e)
+            return "Fail to signup!"
+        finally:
+            cursor.close()
+            conn.close()
+
+
     def getChannels(self):
         conn = self.connectDB()
         cursor = conn.cursor()

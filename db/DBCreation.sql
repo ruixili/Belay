@@ -6,8 +6,7 @@ CREATE TABLE users
 (
     email VARCHAR(30) NOT NULL,
     username VARCHAR(30) NOT NULL,
-    passwd BINARY(60) NOT NULL,
-    photourl VARCHAR(100) NOT NULL,
+    password BINARY(60) NOT NULL,
     timestamp DATETIME DEFAULT NOW(),
     PRIMARY KEY (email)
 );
@@ -43,7 +42,7 @@ CREATE TABLE channel_cat_thread(
 );
 
 
-INSERT INTO users VALUES("rxli@uchicago.edu", "admin", "123456", "default", NOW());
+INSERT INTO users VALUES("rxli@uchicago.edu", "admin", "123456", NOW());
 INSERT INTO channels VALUES("Cat", "rxli@uchicago.edu", "Channel Cat is share information about cat.", NOW());
 INSERT INTO channels VALUES("Dog", "rxli@uchicago.edu", "Channel Dog is share information about dog.", NOW());
 INSERT INTO channels VALUES("Panda", "rxli@uchicago.edu", "Channel Panda is share information about panda.", NOW());

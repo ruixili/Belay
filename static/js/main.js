@@ -84,7 +84,42 @@ $("#login-forget-password").click(function() {
 
 $("#login-signup-btn").click(function() {
     console.log("singup the user");
+    let email = $("#login-signup-email").val();
+    let username = $("#login-signup-username").val();
+    let password = $("#login-signup-password").val();
+    let passwordAgain = $("#login-signup-password-again").val();
+
+    if (password != passwordAgain) {
+        alert("The passwords don't match!");
+        return;
+    }
+    console.log(email, username, password);
+    $.ajax({
+        async: true,
+        type: "POST",
+        url: "/api/signup",
+        data: {
+            "email": email,
+            "username": username,
+            "password": password
+        },
+        success: function(status) {
+            let loadPage = new Promise((resolve, reject) => {
+                signupPage.style.display = "none";
+                loginPage.style.display = "block";
+                window.setTimeout(
+                    function() {
+                        resolve("Success!");
+                    }, 500);
+            })
+
+            loadPage.then((successMessage) => {
+                alert(status);
+            });   
+        }
+    });
 });
+
 
 /*
     forget password page

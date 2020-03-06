@@ -54,6 +54,17 @@ def login ():
 
     return {}, 403
 
+
+@app.route('/api/signup', methods=['POST'])
+def signup ():
+    print("----- calling signup method!")
+    user = {key: request.form.get(key) for key in request.form}
+    print(user)
+
+    status = db_manager.signup(user)
+    return jsonify(status)
+
+
 @app.route('/api/getchannels', methods=['POST'])
 def getchannels ():
     print("----- calling getchannels method!")
