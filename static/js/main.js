@@ -237,7 +237,17 @@ $("#chat-page-more-message-btn").click(function() {
     });
 });
 
+$("#chat-page-send-text-area").keypress(function(e) {
+    if (e.which === 13) {
+        sendMessage();
+    }
+});
+
 $("#chat-page-send-btn").click(function() {
+    sendMessage();
+});
+
+function sendMessage() {
     let channelName = document.getElementById("chat-page-title-name").innerText;
     let message = document.getElementById("chat-page-send-text-area").value;
 
@@ -256,4 +266,4 @@ $("#chat-page-send-btn").click(function() {
             document.getElementById("chat-page-send-text-area").value = '';
         }
     });
-});
+}

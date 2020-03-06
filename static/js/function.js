@@ -101,7 +101,7 @@ function getMessage(channelName) {
         success: function(messages) {
             console.log(messages)
             appendWords(messages);
-            // window.setInterval(getMessage(channelName), 1000);
+            window.setInterval(getMessage(channelName), 1000);
         }
     });
 }
