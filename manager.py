@@ -2,9 +2,29 @@ import mysql.connector
 import datetime
 import bcrypt
 
-DB_NAME = 'belay'
-DB_USERNAME = "root"
-DB_PASSWORD = "123456"
+import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
+
+def forgetPassword(user):
+    # check if email exists?
+
+    # need to change into token
+    magic_link = user['url'] + 'forgetpassword?magic=' + user['email']
+    print("magic_link", magic_link)
+    message = Mail(
+        from_email='admin@belay.com',
+        to_emails=user['email'],
+        subject='Reseting your Belay password',
+        html_content='Click this link to reset your password <strong>{}</strong>!'.format(magic_link))
+    try:
+        sg = SendGridAPIClient(os.environ.get('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'))
+        response = sg.send(message)
+        return "Link sent to your mailbox!"
+    except Exception as e:
+        print(str(e))
+        return "Unable to send email!"
 
 
 class dbManager:

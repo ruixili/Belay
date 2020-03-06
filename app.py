@@ -37,7 +37,7 @@ def generate_chat_id():
 
 
 @app.route('/')
-@app.route('/changepassword')
+@app.route('/forgetpassword')
 def index(chat_id=None):
     return app.send_static_file('index.html')
 
@@ -62,6 +62,17 @@ def signup ():
     print(user)
 
     status = db_manager.signup(user)
+    return jsonify(status)
+
+
+@app.route('/api/forgetpassword', methods=['POST'])
+def forgetpassword():
+    print("----- calling forgetpassword method!")
+    user = {key: request.form.get(key) for key in request.form}
+    user['url'] = request.url_root
+    print(user)
+
+    status = manager.forgetPassword(user)
     return jsonify(status)
 
 

@@ -127,6 +127,31 @@ $("#login-signup-btn").click(function() {
 
 $("#forget-password-btn").click(function() {
     console.log("the user forget the password and send link to the user");
+    let email = $("#forget-password-email").val();
+
+    $.ajax({
+        async: true,
+        type: "POST",
+        url: "/api/forgetpassword",
+        data: {
+            "email": email
+        },
+        success: function(status) {
+            let loadPage = new Promise((resolve, reject) => {
+                forgetPasswordPage.style.display = "none";
+                loginPage.style.display = "block";
+                window.setTimeout(
+                    function() {
+                        resolve("Success!");
+                    }, 500);
+            })
+
+            loadPage.then((successMessage) => {
+                alert(status);
+            });   
+        }
+    });
+
 });
 
 /*
