@@ -9,33 +9,34 @@ var channelPage = document.getElementById("channel-page");
 let pathname = window.location.pathname;
 console.log("pathname: ", pathname);
 
-// // login page
-// if (pathname == "/") {
-//     console.log("in login page");
-//     loginPage.style.display = "block";
-// } else {
-//     // change password
-//     console.log("in change password page");
-//     window.history.pushState(null, null, url="/");
-//     loginPage.style.display = "none";
-//     changePasswordPage.style.display = "block";
-// }
+// login page
+if (pathname == "/") {
+    console.log("in login page");
+    loginPage.style.display = "block";
+} else {
+    // change password
+    console.log("in change password page");
+    window.history.pushState(null, null, url="/");
+    loginPage.style.display = "none";
+    changePasswordPage.style.display = "block";
+}
 
 
 /*
     login page
 */
 $("#login-login-btn").click(function() {
-    e.preventDefault();
     let email = $("#login-login-email").val();
     let password = $("#login-login-password").val();
+    console.log(email, password);
+
     $.ajax({
         async: true,
         type: "POST",
-        url: "/login",
+        url: "/api/login",
         data: {
-            email: email,
-            password: password
+            "email": email,
+            "password": password
         },
         success: function(status) {
             console.log(status);
@@ -43,23 +44,19 @@ $("#login-login-btn").click(function() {
                 alert("Unable to login!");
             } else {
                 loginPage.style.display = "none";
-                channelPage.style.display = "block";
+                let loadPage = new Promise((resolve, reject) => {
+                    channelPage.style.display = "block";
+                    window.setTimeout(
+                        function() {
+                            resolve("Success!");
+                        }, 1000);
+                })
 
-                // let loadPage = new Promise((resolve, reject) => {
-                //     fm.setStatus(STATUS.CHAT);
-                //     fm.userInfo = {'username': status['username'], 'email': email, 'token': status['token'], 'photourl': status['photourl'] };
-                //     window.setTimeout(
-                //         function() {
-                //             resolve("Success!");
-                //         }, 1000);
-                // })
-
-                // loadPage.then((successMessage) => {
-                //     // load new message for the channel
-                //     let channel_name = document.getElementById("channel-name").innerText;
-                //     console.log("I am loading message for" + channel_name);
-                //     firstLoadMessage(channel_name);
-                // });
+                loadPage.then((successMessage) => {
+                    let channelName = document.getElementById("chat-page-title-name").innerText;
+                    console.log("I am loading message for Channel: " + channelName);
+                    firstLoadMessage(channelName);
+                });
             }
         }
     });
@@ -110,7 +107,28 @@ $("#change-password-btn").click(function() {
 
 // chat-page
 $("#chat-page-more-message-btn").click(function() {
-    console.log("the user wants to load more messages");
+    let channelName = document.getElementById("chat-page-title-name").innerText;
+    console.log("the user wants to load more messages for channel: ", channelName);
+    $.ajax({
+        async: true,
+        type: "POST",
+        url: "/api/moremessage",
+        data: {
+            "channelName": channelName,
+            "firstLoad": false
+        },
+        success: function(messages) {
+            console.log("the messages from api" + messages);
+            if (!messages) {
+
+                removeMoremessage();
+                return;
+            } else {
+                insertWords(messages);
+            }
+            // getMessage(channelName);
+        }
+    });
 });
 
 $("#chat-page-send-btn").click(function() {

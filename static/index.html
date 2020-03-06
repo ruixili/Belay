@@ -12,7 +12,7 @@
 	<div id="login-page" class="login-page" style="display: none;">
 		<div class="container-login">
 			<div class="wrap-login">
-				<form class="login-form">
+				<div class="login-form">
 					<span class="login-form-title">
 						Welcome to Belay!
 					</span>
@@ -50,7 +50,7 @@
 							</a>
 						</li>
 					</ul>
-				</form>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -59,7 +59,7 @@
 	<div id="signup-page" class="signup-page" style="display: none;">
 		<div class="container-login">
 			<div class="wrap-login">
-				<form class="login-form">
+				<div class="login-form">
 					<span class="login-form-title">
 						Want to signup?
 						<br> 
@@ -91,7 +91,7 @@
 							Sign up
 						</button>
 					</div>
-				</form>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -100,7 +100,7 @@
 	<div id="forget-password-page" class="forget-password-page" style="display: none;">
 		<div class="container-login">
 			<div class="wrap-login">
-				<form class="login-form">
+				<div class="login-form">
 					<span class="login-form-title">
 						Forget password?
 						<br> 
@@ -117,7 +117,7 @@
 							Send Link
 						</button>
 					</div>
-				</form>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -126,7 +126,7 @@
 	<div id="change-password-page" class="change-password-page" style="display: none;">
 		<div class="container-login">
 			<div class="wrap-login">
-				<form class="login-form">
+				<div class="login-form">
 					<span class="login-form-title">
 						Change your password
 						<br> 
@@ -154,7 +154,7 @@
 						</button>
 					</div>
 
-				</form>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -184,7 +184,7 @@
 					  <a id="chat-page-more-message-btn">More Message</a>
 					</div>
 
-					<div class="chat-page-content">
+<!-- 					<div class="chat-page-content">
 					  <img src="http://localhost:5000/static/images/avatar-01.jpg" alt="Avatar">
 					  <p>Hello. How are you today?Hello. How are you today?Hello. How are you today?Hello. How are you today?Hello. How are you today?</p>
 					  <span>11:00</span>
@@ -233,25 +233,26 @@
 					  <img src="http://localhost:5000/static/images/avatar-01.jpg" alt="Avatar">
 					  <p>Hello. How are you today?</p>
 					  <span>11:00</span>
-					</div>			
+					</div>		 -->	
 				</div>
 			</div>
 
 			<div class="chat-page-send-container">
-			    <form class="chat-page-send-form-container">
+			    <div class="chat-page-send-form-container">
 
 			        <label class="input"><b>Message</b></label>
 			        <textarea placeholder="Type message.." class="input" required></textarea>
 			        <br>
 
-			        <button type="submit" id="chat-page-send-btn">Send</button>
-			  </form>
+			        <button id="chat-page-send-btn">Send</button>
+			  </div>
 			</div>
 
 		</div>
 	</div>
 
 	<script src="http://localhost:5000/static/js/main.js"></script>
+	<script src="http://localhost:5000/static/js/function.js"></script>
 
 </body>
 </html>

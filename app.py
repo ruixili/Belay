@@ -42,11 +42,51 @@ def index(chat_id=None):
 
 # -------------------------------- API ROUTES ----------------------------------
 
-@app.route('/login', methods=['POST'])
+@app.route('/api/login', methods=['POST'])
 def login ():
-    print("calling login method!")
-    status = {login: True}
-    return jsonify(status)
+    print("----- calling login method!")
+    user = {key: request.form.get(key) for key in request.form}
+    print(user)
+
+    if(user["email"] == "rxli@uchicago.edu" and user["password"] == "123456"):
+        return {"session_token": "12345"}
+
+    return {}, 403
+
+
+@app.route('/api/moremessage', methods=['POST'])
+def moremessage():
+    print("----- calling moremessage method!")
+    channel = {key: request.form.get(key) for key in request.form}
+    print(channel)
+
+    return jsonify("")
+
+
+@app.route('/api/post', methods=['POST'])
+def post():
+    print("----- calling post method!")
+    user = {key: request.form.get(key) for key in request.form}
+    print(user)
+
+    if(user["session_token"] != "12345"):
+        return {}, 403
+
+    if 'title' in user['title'] and 'body' in user['body']:
+        new_post = {
+            "id": len(posts),
+            "title": body['title'],
+            "body": body['body']
+        }
+        posts.insert(0, new_post)
+
+    return jsonify(posts)
+
+
+
+
+
+
 
 
 @app.route('/api/create', methods=['POST'])
