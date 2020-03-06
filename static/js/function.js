@@ -57,7 +57,7 @@ function firstLoadMessage(channelName) {
             } else {
                 insertWords(messages);
             }
-            // getMessage(channelName);
+            getMessage(channelName);
         }
     });
 }
@@ -71,14 +71,16 @@ function removeMoremessage(channelName) {
 function insertWords(messages) {
     let moreMessageDiv = document.getElementById("chat-page-content-container").firstChild;
 
-    // for (var i = 0; i < messages.length; i++) {
-        let template = wordTemplate("hahaha");
+    for (var i = 0; i < messages.length; i++) {
+        console.log(messages[i]);
+        let template = wordTemplate(messages[i]);
         moreMessageDiv.parentNode.insertBefore(template, moreMessageDiv.nextSibling.nextSibling);
-    // }
+    }
 }
 
 // getMessage
 function getMessage(channelName) {
+    console.log("Getting new messages for channel: ", channelName);
     let messageIDs = document.querySelectorAll("#msg-id");
     let lastMessageDiv = messageIDs[messageIDs.length - 1];
 
@@ -88,17 +90,19 @@ function getMessage(channelName) {
         return;
     }
     
+    console.log(messageIDs, lastMessageID);
     $.ajax({
         async: true,
         type: "POST",
-        url: "/getmessage",
+        url: "/api/getmessage",
         data: {
-            channelName: channelName,
-            last_message_id: last_message_id
+            "channelName": channelName,
+            "lastMessageID": lastMessageID
         },
         success: function(messages) {
+            console.log(messages)
             appendWords(messages);
-            // window.setInterval(getMessage(channelName), 1000);
+            window.setInterval(getMessage(channelName), 1000);
         }
     });
 }
@@ -112,14 +116,7 @@ function appendWords(messages) {
     }
 }
 
-/*
-	<div class="chat-page-content" name=1>
-	  <div id="msg-id">1</div>
-	  <img src="http://localhost:5000/static/images/avatar-01.jpg" alt="Avatar">
-	  <p>Hello. How are you today?Hello. How are you today?Hello. How are you today?Hello. How are you today?Hello. How are you today?</p>
-	  <span>11:00</span>
-	</div>
-*/
+
 function wordTemplate(message) {
     let div = document.createElement("div");
     div.setAttribute("class", "chat-page-content");
@@ -132,15 +129,15 @@ function wordTemplate(message) {
     let messageid = document.createElement("div");
     messageid.setAttribute("id", "msg-id");
     messageid. setAttribute("hidden", true);
-    messageid.innerText = 1;
+    messageid.innerText = message[1];
     div.appendChild(messageid);
 
     let p = document.createElement("p");
-    p.innerText = "Hello. How are you today?";
+    p.innerText = message[0] + ": " + message[3];
     div.appendChild(p);
 
     let span = document.createElement("span");
-    span.innerText = "11:00";
+    span.innerText = message[2];
     div.appendChild(span);
 
     return div;

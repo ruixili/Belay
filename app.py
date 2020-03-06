@@ -70,8 +70,8 @@ def moremessage():
     print("----- calling moremessage method!")
     channel = {key: request.form.get(key) for key in request.form}
     print(channel)
-
-    return jsonify("")
+    messages = db_manager.moreMessage(channel)
+    return jsonify(messages)
 
 
 @app.route('/api/postmessage', methods=['POST'])
@@ -80,7 +80,17 @@ def postmessage():
     message = {key: request.form.get(key) for key in request.form}
     print(message)
     result = db_manager.postMessage(message)
-    return result
+    return jsonify(result)
+
+
+@app.route('/api/getmessage', methods=['POST'])
+def getmessage():
+    print("----- calling getmessage method!")
+    channel = {key: request.form.get(key) for key in request.form}
+    print(channel)
+    messages = db_manager.getMessage(channel)
+    return jsonify(messages)
+
 
 
 

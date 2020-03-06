@@ -15,7 +15,6 @@ class dbManager:
         return conn
 
     def getChannels(self):
-        channels = []
         conn = self.connectDB()
         cursor = conn.cursor()
         query = "SELECT name from channels"
@@ -46,6 +45,46 @@ class dbManager:
         finally:
             cursor.close()
             conn.close()
+
+    def moreMessage(self, channel):
+        conn = self.connectDB()
+        cursor = conn.cursor()
+        table_name = "channel_" + channel["channelName"]
+
+        try:
+            if channel["firstLoad"] == "true":
+                query = "SELECT u.username, c.id, c.timestamp, c. text FROM {} c LEFT JOIN users u ON c.email = u.email ORDER BY c.id DESC LIMIT 20".format(table_name)
+            else:
+                firstMessageID = int(data['firstMessageID'])
+                query = "SELECT u.username, c.id, c.timestamp, c. text FROM {} c LEFT JOIN users u ON c.email = u.email WHERE c.id < {} AND c.id > {} - 20 + 1 ORDER BY c.id DESC".format(table_name, firstMessageDiv, firstMessageDiv)
+            cursor.execute(query)
+            messages = cursor.fetchall()
+            print(messages)
+            return messages
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            conn.close()
+
+
+    def getMessage(self, channel):
+        conn = self.connectDB()
+        cursor = conn.cursor()
+        table_name = "channel_" + channel["channelName"]
+        lastMessageID = int(channel['lastMessageID'])
+
+        query = "SELECT u.username, c.id, c.timestamp, c.text FROM {} c LEFT JOIN users u ON c.email = u.email WHERE c.id > {} ORDER BY c.id DESC".format(table_name, lastMessageID)
+        try:
+            cursor.execute(query)
+            messages = cursor.fetchall()
+            return messages
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            conn.close()
+
 
     def getTime(self):
         return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")

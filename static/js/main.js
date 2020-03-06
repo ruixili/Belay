@@ -111,6 +111,17 @@ $("#change-password-btn").click(function() {
 // chat-page
 $("#chat-page-more-message-btn").click(function() {
     let channelName = document.getElementById("chat-page-title-name").innerText;
+    console.log("User wants to load more messages for channel: ", channelName);
+
+    let messageIDs = document.querySelectorAll("#msg-id");
+    let firstMessageDiv = messageIDs[0];
+
+    if (firstMessageDiv) {
+        firstMessageID = firstMessageDiv.innerText;
+    } else {
+        return;
+    }
+
     console.log("the user wants to load more messages for channel: ", channelName);
     $.ajax({
         async: true,
@@ -118,12 +129,12 @@ $("#chat-page-more-message-btn").click(function() {
         url: "/api/moremessage",
         data: {
             "channelName": channelName,
-            "firstLoad": false
+            "firstLoad": false,
+            "firstMessageID": firstMessageID
         },
         success: function(messages) {
             console.log("the messages from api" + messages);
             if (!messages) {
-
                 removeMoremessage();
                 return;
             } else {
