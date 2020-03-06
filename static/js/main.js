@@ -134,13 +134,13 @@ $("#chat-page-more-message-btn").click(function() {
         },
         success: function(messages) {
             console.log("the messages from api" + messages);
-            if (!messages) {
+            if (messages.length == 0) {
+                console.log("going to remove the btn");
                 removeMoremessage();
                 return;
             } else {
                 insertWords(messages);
             }
-            // getMessage(channelName);
         }
     });
 });

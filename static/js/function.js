@@ -51,7 +51,7 @@ function firstLoadMessage(channelName) {
         },
         success: function(messages) {
             console.log("the messages from api" + messages);
-            if (!messages) {
+            if (!messages || messages.length == 0) {
                 removeMoremessage();
                 return;
             } else {
@@ -73,7 +73,7 @@ function insertWords(messages) {
 
     for (var i = 0; i < messages.length; i++) {
         console.log(messages[i]);
-        let template = wordTemplate(messages[i]);
+        let template = messageTemplate(messages[i]);
         moreMessageDiv.parentNode.insertBefore(template, moreMessageDiv.nextSibling.nextSibling);
     }
 }
@@ -111,13 +111,12 @@ function appendWords(messages) {
     var container = document.getElementById("chat-page-content-container");
 
     for (var i = 0; i < messages.length; i++) {
-        let template = wordTemplate(messages[i]);
+        let template = messageTemplate(messages[i]);
         container.append(template);
     }
 }
 
-
-function wordTemplate(message) {
+function messageTemplate(message) {
     let div = document.createElement("div");
     div.setAttribute("class", "chat-page-content");
 

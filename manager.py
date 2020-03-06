@@ -46,7 +46,10 @@ class dbManager:
             cursor.close()
             conn.close()
 
+
     def moreMessage(self, channel):
+        print("User want to load more message")
+        print(channel)
         conn = self.connectDB()
         cursor = conn.cursor()
         table_name = "channel_" + channel["channelName"]
@@ -55,8 +58,9 @@ class dbManager:
             if channel["firstLoad"] == "true":
                 query = "SELECT u.username, c.id, c.timestamp, c. text FROM {} c LEFT JOIN users u ON c.email = u.email ORDER BY c.id DESC LIMIT 20".format(table_name)
             else:
-                firstMessageID = int(data['firstMessageID'])
-                query = "SELECT u.username, c.id, c.timestamp, c. text FROM {} c LEFT JOIN users u ON c.email = u.email WHERE c.id < {} AND c.id > {} - 20 + 1 ORDER BY c.id DESC".format(table_name, firstMessageDiv, firstMessageDiv)
+                firstMessageID = int(channel['firstMessageID'])
+                query = "SELECT u.username, c.id, c.timestamp, c. text FROM {} c LEFT JOIN users u ON c.email = u.email WHERE c.id < {} AND c.id > {} - 20 + 1 ORDER BY c.id DESC".format(table_name, firstMessageID, firstMessageID)
+                print(query)
             cursor.execute(query)
             messages = cursor.fetchall()
             print(messages)
