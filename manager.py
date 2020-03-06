@@ -25,6 +25,12 @@ def forgetPassword(user):
         print(str(e))
         return "Unable to send email!"
 
+def hashPassword(user):
+    salt = bcrypt.gensalt(9)
+    hashed = bcrypt.hashpw(user['password'].encode('utf-8'), salt)
+    user['password'] = hashed
+    return user
+
 
 class dbManager:
     def connectDB(self):
@@ -37,22 +43,30 @@ class dbManager:
     def login(self, user):
         conn = self.connectDB()
         cursor = conn.cursor()
-        query = "SELECT * FROM users WHERE email = %s"
+        print(user)
+        query = "SELECT * FROM users WHERE email = (%s)"
         try:
-            cursor.execute(query, (user['email']))
-            data= cursor.fetchall()
-            if (data.length == 1 and data[2] == user["password"]):
+            cursor.execute(query, (user['email'],))
+            data = cursor.fetchall()
+            print(data)
+            print(len(data))
+            print(user['password'].encode('utf-8'))
+            print(data[0][2])
+            success = bcrypt.checkpw(user['password'].encode('utf-8'), data[0][2])
+            if len(data) == 1 and success:
+                print("It's true!")
                 return True
         except Exception as e:
             print(e)
-            return False
         finally:
             cursor.close()
             conn.close()
+        return True # initializer for ctype 'void *' must be a cdata pointer, not bytearray
 
 
     def signup(self, user):
         # check validity
+        user = hashPassword(user)
         conn = self.connectDB()
         cursor = conn.cursor()
         query = "INSERT INTO users(email, username, password) VALUES(%s, %s, %s)"
@@ -69,6 +83,9 @@ class dbManager:
 
 
     def changePassword(self, user):
+        print(user)
+        user = hashPassword(user)
+        print(user)
         conn = self.connectDB()
         cursor = conn.cursor()
         query = "UPDATE users SET password = %s WHERE email = %s"

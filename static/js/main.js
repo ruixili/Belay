@@ -41,7 +41,7 @@ $("#login-login-btn").click(function() {
         },
         success: function(status) {
             console.log(status);
-            if (status == "False") {
+            if (status == false) {
                 alert("Unable to login!");
             } else {
                 loginPage.style.display = "none";

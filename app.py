@@ -49,6 +49,7 @@ def login ():
     user = {key: request.form.get(key) for key in request.form}
     print(user)
     status = db_manager.login(user)
+    print(status)
     return jsonify(status)
 
 
