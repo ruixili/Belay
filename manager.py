@@ -12,7 +12,6 @@ def forgetPassword(user):
 
     # need to change into token
     magic_link = user['url'] + 'forgetpassword?magic=' + user['email']
-    print("magic_link", magic_link)
     message = Mail(
         from_email='admin@belay.com',
         to_emails=user['email'],
@@ -31,12 +30,25 @@ class dbManager:
     def connectDB(self):
         conn = mysql.connector.connect(user="root", database="belay", password="1liruixi")
         if conn:
-            print("success!")
+            print("Connected to database!")
         return conn
 
 
-    def login(self, uesr):
-        return
+    def login(self, user):
+        conn = self.connectDB()
+        cursor = conn.cursor()
+        query = "SELECT * FROM users WHERE email = %s"
+        try:
+            cursor.execute(query, (user['email']))
+            data= cursor.fetchall()
+            if (data.length == 1 and data[2] == user["password"]):
+                return True
+        except Exception as e:
+            print(e)
+            return False
+        finally:
+            cursor.close()
+            conn.close()
 
 
     def signup(self, user):
@@ -56,10 +68,26 @@ class dbManager:
             conn.close()
 
 
+    def changePassword(self, user):
+        conn = self.connectDB()
+        cursor = conn.cursor()
+        query = "UPDATE users SET password = %s WHERE email = %s"
+        try:
+            cursor.execute(query, (user['password'], user['email']))
+            conn.commit()
+            return "Success!"
+        except Exception as e:
+            print(e)
+            return "Fail to change password!"
+        finally:
+            cursor.close()
+            conn.close()
+
+
     def getChannels(self):
         conn = self.connectDB()
         cursor = conn.cursor()
-        query = "SELECT name from channels"
+        query = "SELECT name FROM channels"
         try:
             cursor.execute(query)
             channels = cursor.fetchall()

@@ -48,11 +48,8 @@ def login ():
     print("----- calling login method!")
     user = {key: request.form.get(key) for key in request.form}
     print(user)
-
-    if(user["email"] == "rxli@uchicago.edu" and user["password"] == "123456"):
-        return {"session_token": "12345"}
-
-    return {}, 403
+    status = db_manager.login(user)
+    return jsonify(status)
 
 
 @app.route('/api/signup', methods=['POST'])
@@ -73,6 +70,16 @@ def forgetpassword():
     print(user)
 
     status = manager.forgetPassword(user)
+    return jsonify(status)
+
+
+@app.route('/api/changepassword', methods=['POST'])
+def changepassword():
+    print("----- calling changepassword method!")
+    user = {key: request.form.get(key) for key in request.form}
+    print(user)
+
+    status = db_manager.changePassword(user)
     return jsonify(status)
 
 
