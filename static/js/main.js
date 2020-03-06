@@ -13,6 +13,7 @@ console.log("pathname: ", pathname);
 if (pathname == "/") {
     console.log("in login page");
     loginPage.style.display = "block";
+
 } else {
     // change password
     console.log("in change password page");
@@ -46,6 +47,8 @@ $("#login-login-btn").click(function() {
                 loginPage.style.display = "none";
                 let loadPage = new Promise((resolve, reject) => {
                     channelPage.style.display = "block";
+                    console.log("I am getting Sidebar channel");
+                    getSidebarChannel(email);
                     window.setTimeout(
                         function() {
                             resolve("Success!");

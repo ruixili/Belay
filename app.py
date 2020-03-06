@@ -3,10 +3,11 @@ from functools import wraps
 import string
 import random
 import datetime
-
+import manager
 
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+db_manager = manager.dbManager()
 
 chats = {}
 
@@ -52,6 +53,16 @@ def login ():
         return {"session_token": "12345"}
 
     return {}, 403
+
+@app.route('/api/getchannels', methods=['POST'])
+def getchannels ():
+    print("----- calling getchannels method!")
+    user = {key: request.form.get(key) for key in request.form}
+    print(user)
+
+    channels = db_manager.getChannels()
+    print(channels)
+    return jsonify(channels)
 
 
 @app.route('/api/moremessage', methods=['POST'])
