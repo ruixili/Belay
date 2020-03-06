@@ -21,9 +21,6 @@ a {
 	color: #666666;
 	margin: 0px;
 	transition: all 0.4s;
-	-webkit-transition: all 0.4s;
-  -o-transition: all 0.4s;
-  -moz-transition: all 0.4s;
 }
 
 a:focus {
@@ -108,10 +105,6 @@ iframe {
 .container-login {
   width: 100%;  
   min-height: 100vh;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -174,10 +167,6 @@ iframe {
 [ Button ]*/
 .container-login-form-btn {
   width: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -190,10 +179,6 @@ iframe {
   line-height: 1.2;
   text-transform: uppercase;
 
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -260,18 +245,17 @@ iframe {
 
 /* title */
 .chat-page-title-container {
-  height: 100%;
+  height: 15%;
   width: 75%;
   position: fixed;
   z-index: 1;
   top: 0;
   background-color: transparent;
   overflow-x: hidden;
-  padding-top: 20px;
+  padding-top: 10px;
 }
 
 #chat-page-title-name {
-  padding: 6px 8px 6px 16px;
   text-decoration: none;
   font-size: 40px;
   color: #57b846;
@@ -282,21 +266,26 @@ iframe {
 
 /* content */
 .chat-page-content-big-container {
-  height: 66%;
+  height: 67%;
   width: 75%;
   position: fixed;
   z-index: 1;
-  top: 12%;
+  top: 10%;
   background-color: transparent;
   overflow-x: hidden;
 }
 
 #chat-page-content-container {
   padding: 6px 8px 6px 16px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
+}
+
+#chat-page-more-message-btn {
+  font-family: Arial;
+  font-size: 15px;
+  color: #57b846;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .chat-page-content {
@@ -334,7 +323,7 @@ iframe {
   width: 75%;
   position: fixed;
   z-index: 1;
-  bottom: 0;
+  top: 80%;
   background-color: transparent;
   overflow-x: hidden;
 }
@@ -356,10 +345,6 @@ iframe {
   line-height: 1.2;
   text-transform: uppercase;
 
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
   display: flex;
   justify-content: center;
   align-items: center;

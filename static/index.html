@@ -4,12 +4,12 @@
 	<title>Belay</title>
 	<meta charset="UTF-8">
 
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-
+    <link rel="stylesheet" type="text/css" href="http://localhost:5000/static/css/main.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 </head>
 <body>
 	<!-- login-page -->
-	<div class="login-page" style="display: none;">
+	<div id="login-page" class="login-page" style="display: none;">
 		<div class="container-login">
 			<div class="wrap-login">
 				<form class="login-form">
@@ -35,7 +35,7 @@
 
 					<ul class="login-more">
 						<li>
-							<a id="login-change-password" class="txt2">
+							<a id="login-forget-password" class="txt2">
 								Forgot Password?
 							</a>
 						</li>
@@ -56,7 +56,7 @@
 	</div>
 
 	<!-- signup-page -->
-	<div class="signup-page" style="display: none;">
+	<div id="signup-page" class="signup-page" style="display: none;">
 		<div class="container-login">
 			<div class="wrap-login">
 				<form class="login-form">
@@ -97,7 +97,7 @@
 	</div>
 
 	<!-- forget-password-page -->
-	<div class="forget-password-page" style="display: none;">
+	<div id="forget-password-page" class="forget-password-page" style="display: none;">
 		<div class="container-login">
 			<div class="wrap-login">
 				<form class="login-form">
@@ -109,11 +109,11 @@
 
 					<div class="wrap-input">
                         <label class="input">Email</label>
-						<input id="login-form-send-link-email" class="input" type="text" name="email">
+						<input id="forget-password-email" class="input" type="text" name="email">
 					</div>
 
 					<div class="container-login-form-btn">
-						<button id="login-form-send-link-btn" class="login-form-login-btn">
+						<button id="forget-password-btn" class="login-form-login-btn">
 							Send Link
 						</button>
 					</div>
@@ -122,8 +122,45 @@
 		</div>
 	</div>
 
+	<!-- change-password-page -->
+	<div id="change-password-page" class="change-password-page" style="display: none;">
+		<div class="container-login">
+			<div class="wrap-login">
+				<form class="login-form">
+					<span class="login-form-title">
+						Change your password
+						<br> 
+						<a>Fill the form and change your password!</a>
+					</span>
+
+					<div class="wrap-input">
+                        <label class="input">Email</label>
+						<input id="change-password-email" class="input" type="text" name="email">
+					</div>
+
+					<div class="wrap-input">
+                        <label class="input">New Password</label>
+						<input id="change-password-password" class="input" type="password" name="password">
+					</div>
+
+					<div class="wrap-input">
+                        <label class="input">Re-Enter Password</label>
+						<input id="change-password-password-again" class="input" type="password" name="password-again">
+					</div>
+
+					<div class="container-login-form-btn">
+						<button id="change-password-btn" class="login-form-login-btn">
+							Change Password
+						</button>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+
 	<!-- channel-page -->
-	<div class="channel-page" style="display: block;">
+	<div id="channel-page" class="channel-page" style="display: none;">
 		<!-- Sidebar -->
 		<div class="sidebar" style="width:25%">
 			<h3 class="sidebar-title">Channel</h3>
@@ -143,53 +180,57 @@
 
 			<div class="chat-page-content-big-container">
 				<div id="chat-page-content-container">
+					<div class="chat-page-more-message">
+					  <a id="chat-page-more-message-btn">More Message</a>
+					</div>
+
 					<div class="chat-page-content">
-					  <img src="images/avatar-01.jpg" alt="Avatar">
+					  <img src="http://localhost:5000/static/images/avatar-01.jpg" alt="Avatar">
 					  <p>Hello. How are you today?Hello. How are you today?Hello. How are you today?Hello. How are you today?Hello. How are you today?</p>
 					  <span>11:00</span>
 					</div>
 					<div class="chat-page-content">
-					  <img src="images/avatar-01.jpg" alt="Avatar">
+					  <img src="http://localhost:5000/static/images/avatar-01.jpg" alt="Avatar">
 					  <p>Hello. How are you today?</p>
 					  <span>11:00</span>
 					</div>
 					<div class="chat-page-content">
-					  <img src="images/avatar-01.jpg" alt="Avatar">
+					  <img src="http://localhost:5000/static/images/avatar-01.jpg" alt="Avatar">
 					  <p>Hello. How are you today?</p>
 					  <span>11:00</span>
 					</div>
 					<div class="chat-page-content">
-					  <img src="images/avatar-01.jpg" alt="Avatar">
+					  <img src="http://localhost:5000/static/images/avatar-01.jpg" alt="Avatar">
 					  <p>Hello. How are you today?</p>
 					  <span>11:00</span>
 					</div>
 					<div class="chat-page-content">
-					  <img src="images/avatar-01.jpg" alt="Avatar">
+					  <img src="http://localhost:5000/static/images/avatar-01.jpg" alt="Avatar">
 					  <p>Hello. How are you today?</p>
 					  <span>11:00</span>
 					</div>
 					<div class="chat-page-content">
-					  <img src="images/avatar-01.jpg" alt="Avatar">
+					  <img src="http://localhost:5000/static/images/avatar-01.jpg" alt="Avatar">
 					  <p>Hello. How are you today?</p>
 					  <span>11:00</span>
 					</div>
 					<div class="chat-page-content">
-					  <img src="images/avatar-01.jpg" alt="Avatar">
+					  <img src="http://localhost:5000/static/images/avatar-01.jpg" alt="Avatar">
 					  <p>Hello. How are you today?</p>
 					  <span>11:00</span>
 					</div>
 					<div class="chat-page-content">
-					  <img src="images/avatar-01.jpg" alt="Avatar">
+					  <img src="http://localhost:5000/static/images/avatar-01.jpg" alt="Avatar">
 					  <p>Hello. How are you today?</p>
 					  <span>11:00</span>
 					</div>
 					<div class="chat-page-content">
-					  <img src="images/avatar-01.jpg" alt="Avatar">
+					  <img src="http://localhost:5000/static/images/avatar-01.jpg" alt="Avatar">
 					  <p>Hello. How are you today?</p>
 					  <span>11:00</span>
 					</div>
 					<div class="chat-page-content">
-					  <img src="images/avatar-01.jpg" alt="Avatar">
+					  <img src="http://localhost:5000/static/images/avatar-01.jpg" alt="Avatar">
 					  <p>Hello. How are you today?</p>
 					  <span>11:00</span>
 					</div>			
@@ -210,7 +251,7 @@
 		</div>
 	</div>
 
-	<script src="js/main.js"></script>
+	<script src="http://localhost:5000/static/js/main.js"></script>
 
 </body>
 </html>
