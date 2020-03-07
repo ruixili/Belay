@@ -117,6 +117,24 @@ class dbManager:
             cursor.close()
             conn.close()
 
+    def createChannel(self, channel):
+        # check validity
+        conn = self.connectDB()
+        cursor = conn.cursor()
+        query = "INSERT INTO channels(channelname, timestamp) VALUES(%s, %s)"
+        try:
+            timestamp = self.getTime()
+            cursor.execute(query, (channel['channelName'], timestamp))
+            conn.commit()
+            return "Success!"
+        except Exception as e:
+            print(e)
+            return "Fail to create new channel!"
+        finally:
+            cursor.close()
+            conn.close()
+
+
     def postMessage(self, message):
         conn = self.connectDB()
         cursor = conn.cursor()

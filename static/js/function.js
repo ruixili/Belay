@@ -1,27 +1,46 @@
 // side bar channel
-function getSidebarChannel(email) {
+function createChannel(channelName) {
+    console.log("Creating New Channel: " + channelName);
+    $.ajax({
+        async: true,
+        type: "POST",
+        url: "/api/createchannel",
+        data: {
+            "channelName": channelName
+        },
+        success: function(status) {
+            console.log("Re-get channels after new channel: " + channelName);
+            getSidebarChannel();
+        }
+    });
+
+}
+
+
+function getSidebarChannel() {
     console.log("Loading channels");
     $.ajax({
         async: true,
         type: "POST",
         url: "/api/getchannels",
-        data: {
-            "email": email
-        },
         success: function(channels) {
             console.log("the channels from api: " + channels);
             if (!channels) {
                 return;
             } else {
-                insertChannels(channels);
+                clearAndInsertChannels(channels);
                 return;
             }
         }
     });
 }
 
-function insertChannels(channels) {
+function clearAndInsertChannels(channels) {
     let sidebarCreate = document.getElementById("sidebar-create-btn");
+
+    while (sidebarCreate.previousSibling) {
+        sidebarCreate.parentNode.removeChild(sidebarCreate.previousSibling);
+    }
 
     for (var i = 0; i < channels.length; i++) {
         let template = channelTemplate(channels[i]);

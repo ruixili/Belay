@@ -199,6 +199,19 @@ $("#change-password-btn").click(function() {
 */
 
 // Sidebar
+$("#sidebar-create-btn").click(function() {
+    document.getElementById("sidebar-create-channel").style.display = "block";
+    document.getElementById("sidebar-create-btn").style.display = "none";
+});
+
+$("#sidebar-create-channel-btn").click(function() {
+    let channelName = document.getElementById("sidebar-create-channel-name").value;
+    console.log(channelName);
+    createChannel(channelName);
+    document.getElementById("sidebar-create-btn").style.display = "block";
+    document.getElementById("sidebar-create-channel").style.display = "none";
+});
+
 
 // chat-page
 $("#chat-page-more-message-btn").click(function() {

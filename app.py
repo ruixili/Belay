@@ -95,6 +95,17 @@ def getchannels ():
     return jsonify(channels)
 
 
+@app.route('/api/createchannel', methods=['POST'])
+def createchannel ():
+    print("----- calling createchannel method!")
+    channel = {key: request.form.get(key) for key in request.form}
+    print(channel)
+
+    status = db_manager.createChannel(channel)
+    print(status)
+    return jsonify(status)
+
+
 @app.route('/api/moremessage', methods=['POST'])
 def moremessage():
     print("----- calling moremessage method!")

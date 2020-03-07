@@ -165,8 +165,25 @@
 		<div class="sidebar" style="width:25%">
 			<h3 class="sidebar-title">Channel</h3>
 		    <div id="sidebar-container">
+
 			    <a id="sidebar-create-btn">+ Create</a>
+
+				<div id="sidebar-create-channel" style="display: none;">
+				  <div class="sidebar-create-channel-container">
+					<div class="wrap-input">
+                        <label class="input">New Channel</label>
+						<input id="sidebar-create-channel-name" class="input" type="text">
+					</div>
+
+					<div class="container-login-form-btn">
+						<button id="sidebar-create-channel-btn" class="sidebar-create-channel-btn">
+							Create
+						</button>
+					</div>
+				  </div>
+				</div>			
 			</div>
+
 		</div>
 
 		<!-- Page Content -->
@@ -201,6 +218,7 @@
 
 		</div>
 	</div>
+
 
 	<script src="http://localhost:5000/static/js/main.js"></script>
 	<script src="http://localhost:5000/static/js/function.js"></script>
