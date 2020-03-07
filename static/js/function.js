@@ -43,6 +43,8 @@ function clearAndInsertChannels(channels) {
     }
 
     for (var i = 0; i < channels.length; i++) {
+        // put channel into lastSeenMessageDict
+        lastSeenMessageDict[channels[i][0]] = 0;
         let template = channelTemplate(channels[i]);
         sidebarCreate.parentNode.insertBefore(template, sidebarCreate);
     }
@@ -86,10 +88,11 @@ function emptyChatArea() {
 
 // firstLoadMessage
 function firstLoadMessage(channelName) {
+    let sidebarChannelCount = document.getElementById("sidebar-channel-unread-count-" + channelName);
+    sidebarChannelCount.innerText = 0;
+
     // show unread message count for channels other than channelName
-    console.log("------------------------------------------------------", channelName);
     showUnreadForOtherChannel(channelName);
-    console.log("------------------------------------------------------", channelName);
 
 	// load and call getMessage
     console.log("First loading for channel: ", channelName);
@@ -156,20 +159,20 @@ var curShowUnreadMessageCount;
 function showUnreadForOtherChannel(channelName) {
   clearInterval(curShowUnreadMessageCount);
   curShowUnreadMessageCount = setInterval(function() {
-    channels = JSON.parse(window.localStorage.getItem('lastSeenMessage'));
-    for (var cn in channels){
+    for (var cn in lastSeenMessageDict){
         if (cn != channelName) {
-            console.log("I am in !-------------------" + cn + " " + channels[cn]);
+            console.log("I am in !-------------------" + cn + " " + lastSeenMessageDict[cn]);
 
             // make other channels fetch message count
-            console.log("showUnreadMessageCount for Channel: " + cn + " lastMessageID: " + channels[cn]);
+            console.log("showUnreadMessageCount for Channel: " + cn + " lastMessageID: " + lastSeenMessageDict[cn]);
             // channelName, lastSeenMessageID
-            showUnreadMessageCount(cn, channels[cn]);
+            showUnreadMessageCount(cn, lastSeenMessageDict[cn]);
         }
     }
   }, 1000);
 }
 
+var lastSeenMessageDict = {};
 function showUnreadMessageCount(channelName, lastMessageID) {
     $.ajax({
         async: true,
@@ -204,16 +207,12 @@ function hideMoremessage(channelName) {
     // nomoreMessageDiv.style.display = "block";
 }
 
-// {"sidebar-channel-Cat": 104}
-localStorage.setItem("lastSeenMessage", "{}");
-
+// channels : {"sidebar-channel-Cat": 104}
 function storeLastSeenMessageID(channelName, messages) {
     console.log("Store last message id of Channel: " + channelName + " AS "+ messages[0][1]);
     lastSeenMessageID = messages[0][1];
 
-    channels = JSON.parse(window.localStorage.getItem('lastSeenMessage'));
-    channels[channelName] = lastSeenMessageID;
-    localStorage.setItem("lastSeenMessage", JSON.stringify(channels));
+    lastSeenMessageDict[channelName] = lastSeenMessageID;
 
     // for (var key in channels){
     //   console.log( key, channels[key] );
