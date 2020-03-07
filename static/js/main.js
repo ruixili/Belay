@@ -48,7 +48,7 @@ $("#login-login-btn").click(function() {
                 let loadPage = new Promise((resolve, reject) => {
                     channelPage.style.display = "block";
                     console.log("I am getting Sidebar channel");
-                    getSidebarChannel(email);
+                    getSidebarChannel();
                     window.setTimeout(
                         function() {
                             resolve("Success!");
@@ -57,7 +57,7 @@ $("#login-login-btn").click(function() {
 
                 loadPage.then((successMessage) => {
                     let channelName = document.getElementById("chat-page-title-name").innerText;
-                    console.log("I am loading message for Channel: " + channelName);
+                    console.log("I am loading message for Channel: " + channelName);                    
                     firstLoadMessage(channelName);
                 });
             }

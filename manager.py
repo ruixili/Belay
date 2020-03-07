@@ -35,8 +35,8 @@ def hashPassword(user):
 class dbManager:
     def connectDB(self):
         conn = mysql.connector.connect(user="root", database="belay", password="1liruixi")
-        if conn:
-            print("Connected to database!")
+        # if conn:
+        #     print("Connected to database!")
         return conn
 
 
@@ -48,13 +48,13 @@ class dbManager:
         try:
             cursor.execute(query, (user['email'],))
             data = cursor.fetchall()
-            print(data)
-            print(len(data))
-            print(user['password'].encode('utf-8'))
-            print(data[0][2])
+            # print(data)
+            # print(len(data))
+            # print(user['password'].encode('utf-8'))
+            # print(data[0][2])
             success = bcrypt.checkpw(user['password'].encode('utf-8'), data[0][2])
             if len(data) == 1 and success:
-                print("It's true!")
+                # print("It's true!")
                 return True
         except Exception as e:
             print(e)
@@ -84,9 +84,9 @@ class dbManager:
 
 
     def changePassword(self, user):
-        print(user)
+        # print(user)
         user = hashPassword(user)
-        print(user)
+        # print(user)
         conn = self.connectDB()
         cursor = conn.cursor()
         query = "UPDATE users SET password = %s WHERE email = %s"
@@ -183,8 +183,26 @@ class dbManager:
         try:
             cursor.execute(query, (channel["channelName"],channel['lastMessageID']))
             messages = cursor.fetchall()
-            print(messages)
+            # print(messages)
             return messages
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            conn.close()
+
+
+    def getUnreadMessageCount(self, channel):
+        print("calling getUnreadMessageCount")
+        conn = self.connectDB()
+        cursor = conn.cursor()
+        query = "SELECT COUNT(*) FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.channelname = (%s) AND m.id > (%s)"
+        try:
+            print(channel["channelName"], channel['lastMessageID'])
+            cursor.execute(query, (channel["channelName"], channel['lastMessageID']))
+            count = cursor.fetchone()[0]
+            print("Unread for :" + channel["channelName"], count)
+            return count
         except Exception as e:
             print(e)
         finally:

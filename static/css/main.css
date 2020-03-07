@@ -210,24 +210,39 @@ iframe {
   padding-left: 10px;
 }
 
+
 .sidebar-title  {
   color: #111;
   padding-left: 3px;
 }
 
 
-.sidebar a {
+.sidebar-channel-container {
+  display: flex;
+}
+
+
+.sidebar-channel {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
   font-size: 20px;
   color: #818181;
-  display: block;
+  display: inline;
 }
 
-.sidebar a:hover {
+
+.sidebar-channel:hover {
   color: #57b846;
   transition: 0.5s;
 }
+
+
+.sidebar-channel-unread-count {
+  text-decoration: none;
+  font-size: 15px;
+  color: #818181;
+}
+
 
 #sidebar-create-btn {
   position: fixed;

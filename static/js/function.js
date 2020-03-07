@@ -1,5 +1,3 @@
-var curChannelGetMessage;
-
 // side bar channel
 function createChannel(channelName) {
     console.log("Creating New Channel: " + channelName);
@@ -45,25 +43,33 @@ function clearAndInsertChannels(channels) {
     }
 
     for (var i = 0; i < channels.length; i++) {
-        // store last seen message id
-        localStorage.setItem(channels[i][0], null);
-        lastSeenMessageID = localStorage.getItem(channels[i]);
         let template = channelTemplate(channels[i]);
         sidebarCreate.parentNode.insertBefore(template, sidebarCreate);
     }
 }
 
 function channelTemplate(channel) {
+    let container = document.createElement("div");
+    container.setAttribute("class", "sidebar-channel-container");
+
     let template = document.createElement("a");
     template.setAttribute("class", "sidebar-channel");
+    template.setAttribute("id", "sidebar-channel-" + channel[0]);
     template.onclick = function() {
         document.getElementById("chat-page-title-name").innerText = channel[0];
         emptyChatArea();
         firstLoadMessage(channel[0]);
     }
     template.innerText = channel[0];
+    container.appendChild(template);
 
-    return template
+    let p = document.createElement("p");
+    p.setAttribute("id", "sidebar-channel-unread-count-" + channel[0]);
+    p.setAttribute("class", "sidebar-channel-unread-count");
+    p.innerText = 0;
+    container.appendChild(p);
+
+    return container
 }
 
 function emptyChatArea() {
@@ -80,6 +86,11 @@ function emptyChatArea() {
 
 // firstLoadMessage
 function firstLoadMessage(channelName) {
+    // show unread message count for channels other than channelName
+    console.log("------------------------------------------------------", channelName);
+    showUnreadForOtherChannel(channelName);
+    console.log("------------------------------------------------------", channelName);
+
 	// load and call getMessage
     console.log("First loading for channel: ", channelName);
     $.ajax({
@@ -98,48 +109,14 @@ function firstLoadMessage(channelName) {
                 storeLastSeenMessageID(channelName, messages);
                 insertWords(messages);
             }
-
             getMessage(channelName);
         }
     });
 }
 
+// getMessage for current channel
+var curChannelGetMessage;
 
-
-function hideMoremessage(channelName) {
-    console.log("No more history messages for channel: ", channelName);
-    let moreMessageDiv = document.getElementById("chat-page-more-message");
-    // let nomoreMessageDiv = document.getElementById("chat-page-no-more-message");
-    moreMessageDiv.style.display = "none";
-    // nomoreMessageDiv.style.display = "block";
-}
-
-function storeLastSeenMessageID(channelName, messages) {
-    console.log("Store last message id of Channel: " + channelName + " AS "+ messages[0][1]);
-    lastSeenMessageID = messages[0][1];
-    localStorage.setItem(channelName, lastSeenMessageID);
-    lastSeenMessageID = localStorage.getItem(channelName);
-    console.log(lastSeenMessageID);
-    console.log("lastSeenMessageID --- " + lastSeenMessageID);
-    console.log("lastSeenMessageID for cat --- " + localStorage.getItem("Cat"));
-    console.log("lastSeenMessageID for dog --- " + localStorage.getItem("Dog"));
-    console.log("lastSeenMessageID for Bear --- " + localStorage.getItem("Bear"));
-    console.log("lastSeenMessageID for Lion --- " + localStorage.getItem("Lion"));
-    console.log("lastSeenMessageID for Panda --- " + localStorage.getItem("Panda"));
-
-}
-
-
-function insertWords(messages) {
-    let moreMessageDiv = document.getElementById("chat-page-content-container").firstChild;
-
-    for (var i = 0; i < messages.length; i++) {
-        let template = messageTemplate(messages[i]);
-        moreMessageDiv.parentNode.insertBefore(template, moreMessageDiv.nextSibling.nextSibling);
-    }
-}
-
-// getMessage
 function getMessage(channelName) {
   clearInterval(curChannelGetMessage);
   curChannelGetMessage = setInterval(function() {
@@ -171,7 +148,85 @@ function getMessage(channelName) {
     });
 
   }, 1000);
+}
 
+// get message count for background channel
+var curShowUnreadMessageCount;
+
+function showUnreadForOtherChannel(channelName) {
+  clearInterval(curShowUnreadMessageCount);
+  curShowUnreadMessageCount = setInterval(function() {
+    channels = JSON.parse(window.localStorage.getItem('lastSeenMessage'));
+    for (var cn in channels){
+        if (cn != channelName) {
+            console.log("I am in !-------------------" + cn + " " + channels[cn]);
+
+            // make other channels fetch message count
+            console.log("showUnreadMessageCount for Channel: " + cn + " lastMessageID: " + channels[cn]);
+            // channelName, lastSeenMessageID
+            showUnreadMessageCount(cn, channels[cn]);
+        }
+    }
+  }, 1000);
+}
+
+function showUnreadMessageCount(channelName, lastMessageID) {
+    $.ajax({
+        async: true,
+        type: "POST",
+        url: "/api/getunreadmessagecount",
+        data: {
+            "channelName": channelName,
+            "lastMessageID": lastMessageID
+        },
+        success: function(count) {
+            console.log("the messages from getunreadmessagecount api: " + count);
+            if (count) {
+                showUnreadOnSidebar(channelName, count);
+            }
+        }
+    });
+}
+
+////////////
+function showUnreadOnSidebar(channelName, count) {
+    let sidebarChannelCount = document.getElementById("sidebar-channel-unread-count-" + channelName);
+    sidebarChannelCount.innerText = count;
+}
+
+
+
+function hideMoremessage(channelName) {
+    console.log("No more history messages for channel: ", channelName);
+    let moreMessageDiv = document.getElementById("chat-page-more-message");
+    // let nomoreMessageDiv = document.getElementById("chat-page-no-more-message");
+    moreMessageDiv.style.display = "none";
+    // nomoreMessageDiv.style.display = "block";
+}
+
+// {"sidebar-channel-Cat": 104}
+localStorage.setItem("lastSeenMessage", "{}");
+
+function storeLastSeenMessageID(channelName, messages) {
+    console.log("Store last message id of Channel: " + channelName + " AS "+ messages[0][1]);
+    lastSeenMessageID = messages[0][1];
+
+    channels = JSON.parse(window.localStorage.getItem('lastSeenMessage'));
+    channels[channelName] = lastSeenMessageID;
+    localStorage.setItem("lastSeenMessage", JSON.stringify(channels));
+
+    // for (var key in channels){
+    //   console.log( key, channels[key] );
+    // }
+}
+
+function insertWords(messages) {
+    let moreMessageDiv = document.getElementById("chat-page-content-container").firstChild;
+
+    for (var i = 0; i < messages.length; i++) {
+        let template = messageTemplate(messages[i]);
+        moreMessageDiv.parentNode.insertBefore(template, moreMessageDiv.nextSibling.nextSibling);
+    }
 }
 
 function appendWords(messages) {

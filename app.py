@@ -45,19 +45,19 @@ def index(chat_id=None):
 
 @app.route('/api/login', methods=['POST'])
 def login ():
-    print("----- calling login method!")
+    # print("----- calling login method!")
     user = {key: request.form.get(key) for key in request.form}
-    print(user)
+    # print(user)
     status = db_manager.login(user)
-    print(status)
+    # print(status)
     return jsonify(status)
 
 
 @app.route('/api/signup', methods=['POST'])
 def signup ():
-    print("----- calling signup method!")
+    # print("----- calling signup method!")
     user = {key: request.form.get(key) for key in request.form}
-    print(user)
+    # print(user)
 
     status = db_manager.signup(user)
     return jsonify(status)
@@ -65,10 +65,10 @@ def signup ():
 
 @app.route('/api/forgetpassword', methods=['POST'])
 def forgetpassword():
-    print("----- calling forgetpassword method!")
+    # print("----- calling forgetpassword method!")
     user = {key: request.form.get(key) for key in request.form}
     user['url'] = request.url_root
-    print(user)
+    # print(user)
 
     status = manager.forgetPassword(user)
     return jsonify(status)
@@ -76,9 +76,9 @@ def forgetpassword():
 
 @app.route('/api/changepassword', methods=['POST'])
 def changepassword():
-    print("----- calling changepassword method!")
+    # print("----- calling changepassword method!")
     user = {key: request.form.get(key) for key in request.form}
-    print(user)
+    # print(user)
 
     status = db_manager.changePassword(user)
     return jsonify(status)
@@ -86,51 +86,59 @@ def changepassword():
 
 @app.route('/api/getchannels', methods=['POST'])
 def getchannels ():
-    print("----- calling getchannels method!")
+    # print("----- calling getchannels method!")
     user = {key: request.form.get(key) for key in request.form}
-    print(user)
+    # print(user)
 
     channels = db_manager.getChannels()
-    print(channels)
+    # print(channels)
     return jsonify(channels)
 
 
 @app.route('/api/createchannel', methods=['POST'])
 def createchannel ():
-    print("----- calling createchannel method!")
+    # print("----- calling createchannel method!")
     channel = {key: request.form.get(key) for key in request.form}
-    print(channel)
+    # print(channel)
 
     status = db_manager.createChannel(channel)
-    print(status)
+    # print(status)
     return jsonify(status)
 
 
 @app.route('/api/moremessage', methods=['POST'])
 def moremessage():
-    print("----- calling moremessage method!")
+    # print("----- calling moremessage method!")
     channel = {key: request.form.get(key) for key in request.form}
-    print(channel)
+    # print(channel)
     messages = db_manager.moreMessage(channel)
     return jsonify(messages)
 
 
 @app.route('/api/postmessage', methods=['POST'])
 def postmessage():
-    print("----- calling postmessage method!")
+    # print("----- calling postmessage method!")
     message = {key: request.form.get(key) for key in request.form}
-    print(message)
+    # print(message)
     result = db_manager.postMessage(message)
     return jsonify(result)
 
 
 @app.route('/api/getmessage', methods=['POST'])
 def getmessage():
-    print("----- calling getmessage method!")
+    # print("----- calling getmessage method!")
     channel = {key: request.form.get(key) for key in request.form}
-    print(channel)
+    # print(channel)
     messages = db_manager.getMessage(channel)
     return jsonify(messages)
+
+@app.route('/api/getunreadmessagecount', methods=['POST'])
+def getunreadmessagecount():
+    print("----- calling getunreadmessagecount method!")
+    channel = {key: request.form.get(key) for key in request.form}
+    print(channel)
+    count = db_manager.getUnreadMessageCount(channel)
+    return jsonify(count)
 
 
 
