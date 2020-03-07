@@ -31,7 +31,10 @@ function insertChannels(channels) {
 
 function channelTemplate(channel) {
     let template = document.createElement("a");
-    template.setAttribute("id", "sidebar-channel-" + channel[0]);
+    template.setAttribute("class", "sidebar-channel");
+    template.onclick = function() {
+        firstLoadMessage(channel[0]);
+    }
     template.innerText = channel[0];
 
     return template
@@ -99,14 +102,18 @@ function getMessage(channelName) {
             "lastMessageID": lastMessageID
         },
         success: function(messages) {
-            console.log(messages)
+            console.log(messages);
             appendWords(messages);
-            window.setInterval(getMessage(channelName), 1000);
+            // window.setInterval(getMessage(channelName), 10000);
         }
     });
 }
 
 function appendWords(messages) {
+    if (!messages) {
+        return;
+    }
+
     var container = document.getElementById("chat-page-content-container");
 
     for (var i = 0; i < messages.length; i++) {

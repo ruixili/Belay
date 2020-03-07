@@ -69,9 +69,10 @@ class dbManager:
         user = hashPassword(user)
         conn = self.connectDB()
         cursor = conn.cursor()
-        query = "INSERT INTO users(email, username, password) VALUES(%s, %s, %s)"
+        query = "INSERT INTO users(email, username, password, timestamp) VALUES(%s, %s, %s, %s)"
         try:
-            cursor.execute(query, (user['email'], user['username'], user['password']))
+            timestamp = self.getTime()
+            cursor.execute(query, (user['email'], user['username'], user['password'], timestamp))
             conn.commit()
             return "Success!"
         except Exception as e:
@@ -104,14 +105,14 @@ class dbManager:
     def getChannels(self):
         conn = self.connectDB()
         cursor = conn.cursor()
-        query = "SELECT name FROM channels"
+        query = "SELECT channelname FROM channels"
         try:
             cursor.execute(query)
             channels = cursor.fetchall()
             return channels
         except Exception as e:
             print(e)
-            return {"username": username}, 302
+            return "Fail to fetch channels!"
         finally:
             cursor.close()
             conn.close()
@@ -119,11 +120,10 @@ class dbManager:
     def postMessage(self, message):
         conn = self.connectDB()
         cursor = conn.cursor()
-        table_name = "channel_" + message["channelName"]
-        query = "INSERT INTO {}(email, text, timestamp) VALUES(%s, %s, %s)".format(table_name)
+        query = "INSERT INTO messages(email, channelname, text, timestamp) VALUES(%s, %s, %s, %s)"
         try:
             timestamp = self.getTime()
-            cursor.execute(query, (message['email'], message['message'], timestamp))
+            cursor.execute(query, (message['email'], message["channelName"], message['message'], timestamp))
             conn.commit()
             return "Success!"
         except Exception as e:
@@ -139,16 +139,15 @@ class dbManager:
         print(channel)
         conn = self.connectDB()
         cursor = conn.cursor()
-        table_name = "channel_" + channel["channelName"]
 
         try:
             if channel["firstLoad"] == "true":
-                query = "SELECT u.username, c.id, c.timestamp, c. text FROM {} c LEFT JOIN users u ON c.email = u.email ORDER BY c.id DESC LIMIT 20".format(table_name)
+                query = "SELECT u.username, m.id, m.timestamp, m.text FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.channelname = (%s) ORDER BY m.id DESC LIMIT 20"
+                cursor.execute(query, (channel["channelName"],))
             else:
-                firstMessageID = int(channel['firstMessageID'])
-                query = "SELECT u.username, c.id, c.timestamp, c. text FROM {} c LEFT JOIN users u ON c.email = u.email WHERE c.id < {} AND c.id > {} - 20 + 1 ORDER BY c.id DESC".format(table_name, firstMessageID, firstMessageID)
+                query = "SELECT u.username, m.id, m.timestamp, m.text FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.channelname = (%s) AND m.id < (%d) AND m.id > (%d) - 20 + 1 ORDER BY m.id DESC"
+                cursor.execute(query, (channel["channelName"], channel['firstMessageID'], channel['firstMessageID']))
                 print(query)
-            cursor.execute(query)
             messages = cursor.fetchall()
             print(messages)
             return messages
@@ -162,13 +161,11 @@ class dbManager:
     def getMessage(self, channel):
         conn = self.connectDB()
         cursor = conn.cursor()
-        table_name = "channel_" + channel["channelName"]
-        lastMessageID = int(channel['lastMessageID'])
-
-        query = "SELECT u.username, c.id, c.timestamp, c.text FROM {} c LEFT JOIN users u ON c.email = u.email WHERE c.id > {} ORDER BY c.id DESC".format(table_name, lastMessageID)
+        query = "SELECT u.username, m.id, m.timestamp, m.text FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.channelname = (%s) AND m.id > (%s) ORDER BY m.id DESC"
         try:
-            cursor.execute(query)
+            cursor.execute(query, (channel["channelName"],channel['lastMessageID']))
             messages = cursor.fetchall()
+            print(messages)
             return messages
         except Exception as e:
             print(e)
