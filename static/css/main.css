@@ -234,6 +234,7 @@ iframe {
   z-index: 1;
   bottom: 0;
   padding-bottom: 20px;
+  background-color: #eee; 
 }
 
 #sidebar-create-channel {

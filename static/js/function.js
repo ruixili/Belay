@@ -1,3 +1,5 @@
+var curChannelGetMessage;
+
 // side bar channel
 function createChannel(channelName) {
     console.log("Creating New Channel: " + channelName);
@@ -43,6 +45,9 @@ function clearAndInsertChannels(channels) {
     }
 
     for (var i = 0; i < channels.length; i++) {
+        // store last seen message id
+        localStorage.setItem(channels[i][0], null);
+        lastSeenMessageID = localStorage.getItem(channels[i]);
         let template = channelTemplate(channels[i]);
         sidebarCreate.parentNode.insertBefore(template, sidebarCreate);
     }
@@ -86,16 +91,20 @@ function firstLoadMessage(channelName) {
             "firstLoad": true
         },
         success: function(messages) {
-            console.log("the messages from api" + messages);
+            console.log("the messages from moremessage api: " + messages);
             if (!messages || messages.length == 0) {
                 hideMoremessage(channelName);
             } else {
+                storeLastSeenMessageID(channelName, messages);
                 insertWords(messages);
             }
+
             getMessage(channelName);
         }
     });
 }
+
+
 
 function hideMoremessage(channelName) {
     console.log("No more history messages for channel: ", channelName);
@@ -105,11 +114,26 @@ function hideMoremessage(channelName) {
     // nomoreMessageDiv.style.display = "block";
 }
 
+function storeLastSeenMessageID(channelName, messages) {
+    console.log("Store last message id of Channel: " + channelName + " AS "+ messages[0][1]);
+    lastSeenMessageID = messages[0][1];
+    localStorage.setItem(channelName, lastSeenMessageID);
+    lastSeenMessageID = localStorage.getItem(channelName);
+    console.log(lastSeenMessageID);
+    console.log("lastSeenMessageID --- " + lastSeenMessageID);
+    console.log("lastSeenMessageID for cat --- " + localStorage.getItem("Cat"));
+    console.log("lastSeenMessageID for dog --- " + localStorage.getItem("Dog"));
+    console.log("lastSeenMessageID for Bear --- " + localStorage.getItem("Bear"));
+    console.log("lastSeenMessageID for Lion --- " + localStorage.getItem("Lion"));
+    console.log("lastSeenMessageID for Panda --- " + localStorage.getItem("Panda"));
+
+}
+
+
 function insertWords(messages) {
     let moreMessageDiv = document.getElementById("chat-page-content-container").firstChild;
 
     for (var i = 0; i < messages.length; i++) {
-        console.log(messages[i]);
         let template = messageTemplate(messages[i]);
         moreMessageDiv.parentNode.insertBefore(template, moreMessageDiv.nextSibling.nextSibling);
     }
@@ -117,6 +141,8 @@ function insertWords(messages) {
 
 // getMessage
 function getMessage(channelName) {
+  clearInterval(curChannelGetMessage);
+  curChannelGetMessage = setInterval(function() {
     console.log("Getting new messages for channel: ", channelName);
     let messageIDs = document.querySelectorAll("#msg-id");
     let lastMessageDiv = messageIDs[messageIDs.length - 1];
@@ -124,10 +150,9 @@ function getMessage(channelName) {
     if (lastMessageDiv) {
         lastMessageID = lastMessageDiv.innerText;
     } else {
-        return;
+        lastMessageID = 0;
     }
     
-    console.log(messageIDs, lastMessageID);
     $.ajax({
         async: true,
         type: "POST",
@@ -137,11 +162,16 @@ function getMessage(channelName) {
             "lastMessageID": lastMessageID
         },
         success: function(messages) {
-            console.log(messages);
-            appendWords(messages);
-            // window.setInterval(getMessage(channelName), 10000);
+            console.log("the messages from getmessage api: " + messages);
+            if (messages && messages.length != 0) {
+                storeLastSeenMessageID(channelName, messages);
+                appendWords(messages);
+            }
         }
     });
+
+  }, 1000);
+
 }
 
 function appendWords(messages) {
@@ -154,6 +184,7 @@ function appendWords(messages) {
     for (var i = 0; i < messages.length; i++) {
         let template = messageTemplate(messages[i]);
         container.append(template);
+        console.log(messages[i]);
     }
 }
 
