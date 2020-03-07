@@ -207,6 +207,10 @@ $("#sidebar-create-btn").click(function() {
 $("#sidebar-create-channel-btn").click(function() {
     let channelName = document.getElementById("sidebar-create-channel-name").value;
     console.log(channelName);
+    if (!channelName) {
+        alert("Channel name can't be empty!");
+        return;
+    }
     createChannel(channelName);
     document.getElementById("sidebar-create-btn").style.display = "block";
     document.getElementById("sidebar-create-channel").style.display = "none";
