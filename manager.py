@@ -145,7 +145,7 @@ class dbManager:
                 query = "SELECT u.username, m.id, m.timestamp, m.text FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.channelname = (%s) ORDER BY m.id DESC LIMIT 20"
                 cursor.execute(query, (channel["channelName"],))
             else:
-                query = "SELECT u.username, m.id, m.timestamp, m.text FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.channelname = (%s) AND m.id < (%d) AND m.id > (%d) - 20 + 1 ORDER BY m.id DESC"
+                query = "SELECT u.username, m.id, m.timestamp, m.text FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.channelname = (%s) AND m.id < (%s) AND m.id > (%s) - 20 + 1 ORDER BY m.id DESC"
                 cursor.execute(query, (channel["channelName"], channel['firstMessageID'], channel['firstMessageID']))
                 print(query)
             messages = cursor.fetchall()

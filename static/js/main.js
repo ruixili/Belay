@@ -226,9 +226,9 @@ $("#chat-page-more-message-btn").click(function() {
         },
         success: function(messages) {
             console.log("the messages from api" + messages);
-            if (messages.length == 0) {
-                console.log("going to remove the btn");
-                removeMoremessage();
+            if (!messages || messages.length == 0) {
+                console.log("going to hide the btn");
+                hideMoremessage();
                 return;
             } else {
                 insertWords(messages);

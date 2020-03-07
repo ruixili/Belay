@@ -33,11 +33,25 @@ function channelTemplate(channel) {
     let template = document.createElement("a");
     template.setAttribute("class", "sidebar-channel");
     template.onclick = function() {
+        document.getElementById("chat-page-title-name").innerText = channel[0];
+        emptyChatArea();
         firstLoadMessage(channel[0]);
     }
     template.innerText = channel[0];
 
     return template
+}
+
+function emptyChatArea() {
+    let moreMessageDiv = document.getElementById("chat-page-more-message");
+    console.log(moreMessageDiv);
+
+    while (moreMessageDiv.nextSibling) {
+        moreMessageDiv.parentNode.removeChild(moreMessageDiv.nextSibling);
+    }
+
+    moreMessageDiv.style.display = "block";
+    console.log("moreMessageDiv.style.display", moreMessageDiv.style.display);
 }
 
 // firstLoadMessage
@@ -55,7 +69,7 @@ function firstLoadMessage(channelName) {
         success: function(messages) {
             console.log("the messages from api" + messages);
             if (!messages || messages.length == 0) {
-                removeMoremessage();
+                hideMoremessage(channelName);
             } else {
                 insertWords(messages);
             }
@@ -64,10 +78,12 @@ function firstLoadMessage(channelName) {
     });
 }
 
-function removeMoremessage(channelName) {
+function hideMoremessage(channelName) {
     console.log("No more history messages for channel: ", channelName);
-    let moreMessageBtn = document.getElementById("chat-page-more-message-btn");
-    moreMessageBtn.innerText = "Reach the end of the world!";
+    let moreMessageDiv = document.getElementById("chat-page-more-message");
+    // let nomoreMessageDiv = document.getElementById("chat-page-no-more-message");
+    moreMessageDiv.style.display = "none";
+    // nomoreMessageDiv.style.display = "block";
 }
 
 function insertWords(messages) {
