@@ -5,6 +5,8 @@
 	<meta charset="UTF-8">
 
     <link rel="stylesheet" type="text/css" href="http://localhost:5000/static/css/main.css">
+    <link rel="stylesheet" type="text/css" href="http://localhost:5000/static/css/sidebar.css">
+    <link rel="stylesheet" type="text/css" href="http://localhost:5000/static/css/thread.css">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -162,7 +164,7 @@
 	<!-- channel-page -->
 	<div id="channel-page" class="channel-page" style="display: none;">
 		<!-- Sidebar -->
-		<div class="sidebar" style="width:25%">
+		<div class="sidebar">
 			<h3 class="sidebar-title">Channel</h3>
 		    <div id="sidebar-container">
 
@@ -213,7 +215,25 @@
 			        <br>
 
 			        <button id="chat-page-send-btn">Send</button>
-			  </div>
+			    </div>
+			</div>
+
+		</div>
+
+		<!-- Thread -->
+		<div id="thread-page" style="display: none;">
+			<h3 id="thread-page-title"></h3>
+			<p id="thread-page-replyid"></p>
+		    <div id="thread-page-container">				
+			    <a id="thread-close-btn">- Close</a>
+			    <div class="thread-page-send-form-container">
+
+			        <label class="input"><b>Message</b></label>
+			        <textarea id="thread-page-send-text-area" placeholder="Type message.." class="input" required></textarea>
+			        <br>
+
+			        <button id="thread-page-send-btn">Send</button>
+			    </div>
 			</div>
 
 		</div>

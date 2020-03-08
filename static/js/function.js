@@ -92,7 +92,7 @@ function firstLoadMessage(channelName) {
     sidebarChannelCount.innerText = 0;
 
     // show unread message count for channels other than channelName
-    showUnreadForOtherChannel(channelName);
+    // showUnreadForOtherChannel(channelName);
 
 	// load and call getMessage
     console.log("First loading for channel: ", channelName);
@@ -112,7 +112,7 @@ function firstLoadMessage(channelName) {
                 storeLastSeenMessageID(channelName, messages);
                 insertWords(messages);
             }
-            getMessage(channelName);
+            // getMessage(channelName);
         }
     });
 }
@@ -191,7 +191,7 @@ function showUnreadMessageCount(channelName, lastMessageID) {
     });
 }
 
-////////////
+
 function showUnreadOnSidebar(channelName, count) {
     let sidebarChannelCount = document.getElementById("sidebar-channel-unread-count-" + channelName);
     sidebarChannelCount.innerText = count;
@@ -265,6 +265,85 @@ function messageTemplate(message) {
     span.innerText = message[2];
     div.appendChild(span);
 
+    div.onclick = function() {
+        isLoad = loadThreadMessage(message);
+        showThreadPage(message);
+    }
+
     return div;
 }
 
+function loadThreadMessage(message) {
+    messageusername = message[0];
+    threadMessageID = message[1];
+    time = message[2];
+    content = message[3];
+
+    $.ajax({
+        async: true,
+        type: "POST",
+        url: "/api/loadthreadmassage",
+        data: {
+            "threadMessageID": threadMessageID
+        },
+        success: function(messages) {
+            console.log("the messages from loadthreadmassage api: " + messages);
+            if (!messages) {
+                return false;
+            }
+            insertThreadMessage(messages);
+            return true;
+        }
+    });
+}
+
+function insertThreadMessage(messages) {
+    let container = document.getElementById("thread-page-container");
+    let closeBtn = document.getElementById("thread-close-btn");
+
+    for (var i = 0; i < messages.length; i++) {
+        let template = messageTemplate(messages[i]);
+        container.insertBefore(template, closeBtn);
+        console.log(messages[i]);
+    }
+}
+
+function showThreadPage(message) {
+    console.log("showThreadPage as block!!!!!!!!!!!!!");
+    document.getElementById("thread-page").style.display = "block";
+    document.getElementById("thread-page-title").innerText = message[0] + ": " + message[3];
+    document.getElementById("thread-page-replyid").innerText = message[1];
+}
+
+function hideThreadPage() {
+    document.getElementById("thread-page").style.display = "none";
+    document.getElementById("thread-page-title").innerText = "";
+    let container = document.getElementById("thread-page-container");
+
+    while (container.childElementCount > 2) {
+        container.removeChild(container.firstChild);
+    }
+}
+
+function sendThreadMessage() {
+    let channelName = document.getElementById("chat-page-title-name").innerText;
+    let replyid = document.getElementById("thread-page-replyid").innerText;
+    let message = document.getElementById("thread-page-send-text-area").value;
+
+    console.log("The user send a message to Channel: " + channelName + " : " + message);
+    $.ajax({
+        async: true,
+        type: "POST",
+        url: "/api/sendthreadmessage",
+        data: {
+            "email": localStorage.getItem("email"),
+            "channelName": channelName,
+            "message": message,
+            "replyid": replyid
+        },
+        success: function(status) {
+            console.log(status);
+            document.getElementById("thread-page-send-text-area").value = '';
+        }
+    });
+}

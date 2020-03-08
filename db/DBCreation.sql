@@ -23,6 +23,7 @@ CREATE TABLE messages(
     channelname VARCHAR(60) NOT NULL,
     text VARCHAR(200),
     timestamp DATETIME DEFAULT NOW(),
+    replyid INT DEFAULT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (email) REFERENCES users(email),
     FOREIGN KEY (channelname) REFERENCES channels(channelname)
@@ -30,7 +31,7 @@ CREATE TABLE messages(
 
 
 INSERT INTO users VALUES("rxli@uchicago.edu", "admin", "123456", NOW());
-INSERT INTO channels VALUES("Cat", "Channel Cat is share information about cat.", NOW());
-INSERT INTO channels VALUES("Dog", "Channel Dog is share information about dog.", NOW());
-INSERT INTO channels VALUES("Panda", "Channel Panda is share information about panda.", NOW());
-INSERT INTO messages(email, channelname, text, timestamp) VALUES("rxli@uchicago.edu", "Cat", "1", NOW());
+INSERT INTO channels VALUES("Cat", NOW());
+INSERT INTO channels VALUES("Dog", NOW());
+INSERT INTO channels VALUES("Panda", NOW());
+INSERT INTO messages(email, channelname, text) VALUES("rxli@uchicago.edu", "Cat", "hhh");

@@ -132,17 +132,31 @@ def getmessage():
     messages = db_manager.getMessage(channel)
     return jsonify(messages)
 
+
 @app.route('/api/getunreadmessagecount', methods=['POST'])
 def getunreadmessagecount():
-    print("----- calling getunreadmessagecount method!")
+    # print("----- calling getunreadmessagecount method!")
     channel = {key: request.form.get(key) for key in request.form}
-    print(channel)
+    # print(channel)
     count = db_manager.getUnreadMessageCount(channel)
     return jsonify(count)
 
 
+@app.route('/api/loadthreadmassage', methods=['POST'])
+def loadthreadmassage():
+    print("----- calling loadthreadmassage method!")
+    thread = {key: request.form.get(key) for key in request.form}
+    print(thread)
+    messages = db_manager.loadThreadMessage(thread)
+    return jsonify(messages)
 
-
+@app.route('/api/sendthreadmessage', methods=['POST'])
+def sendthreadmessage():
+    print("----- calling sendthreadmessage method!")
+    message = {key: request.form.get(key) for key in request.form}
+    print(message)
+    status = db_manager.sendThreadMessage(message)
+    return jsonify(status)
 
 
 

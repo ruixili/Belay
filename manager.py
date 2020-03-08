@@ -160,10 +160,10 @@ class dbManager:
 
         try:
             if channel["firstLoad"] == "true":
-                query = "SELECT u.username, m.id, m.timestamp, m.text FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.channelname = (%s) ORDER BY m.id DESC LIMIT 20"
+                query = "SELECT u.username, m.id, m.timestamp, m.text FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.channelname = (%s) AND m.replyid IS NULL ORDER BY m.id DESC LIMIT 20"
                 cursor.execute(query, (channel["channelName"],))
             else:
-                query = "SELECT u.username, m.id, m.timestamp, m.text FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.channelname = (%s) AND m.id < (%s) AND m.id > (%s) - 20 + 1 ORDER BY m.id DESC"
+                query = "SELECT u.username, m.id, m.timestamp, m.text FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.channelname = (%s) AND m.replyid IS NULL AND m.id < (%s) AND m.id > (%s) - 20 + 1 ORDER BY m.id DESC"
                 cursor.execute(query, (channel["channelName"], channel['firstMessageID'], channel['firstMessageID']))
                 print(query)
             messages = cursor.fetchall()
@@ -179,11 +179,11 @@ class dbManager:
     def getMessage(self, channel):
         conn = self.connectDB()
         cursor = conn.cursor()
-        query = "SELECT u.username, m.id, m.timestamp, m.text FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.channelname = (%s) AND m.id > (%s) ORDER BY m.id DESC"
+        query = "SELECT u.username, m.id, m.timestamp, m.text FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.channelname = (%s) AND m.replyid IS NULL AND m.id > (%s) ORDER BY m.id DESC"
         try:
             cursor.execute(query, (channel["channelName"],channel['lastMessageID']))
             messages = cursor.fetchall()
-            # print(messages)
+            print(messages)
             return messages
         except Exception as e:
             print(e)
@@ -205,6 +205,39 @@ class dbManager:
             return count
         except Exception as e:
             print(e)
+        finally:
+            cursor.close()
+            conn.close()
+
+
+    def loadThreadMessage(self, thread):
+        conn = self.connectDB()
+        cursor = conn.cursor()
+        query = "SELECT u.username, m.id, m.timestamp, m.text FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.replyId = (%s) ORDER BY m.id DESC"
+        try:
+            cursor.execute(query, (thread['threadMessageID'], ))
+            messages = cursor.fetchall()
+            print(messages)
+            return messages
+        except Exception as e:
+            print(e)
+        finally:
+            cursor.close()
+            conn.close()
+
+
+    def sendThreadMessage(self, message):
+        conn = self.connectDB()
+        cursor = conn.cursor()
+        query = "INSERT INTO messages(email, channelname, text, timestamp, replyid) VALUES(%s, %s, %s, %s, %s)"
+        try:
+            timestamp = self.getTime()
+            cursor.execute(query, (message['email'], message["channelName"], message['message'], timestamp, message['replyid']))
+            conn.commit()
+            return "Success!"
+        except Exception as e:
+            print(e)
+            return "Fail to send!"
         finally:
             cursor.close()
             conn.close()

@@ -1,0 +1,114 @@
+/*------------------------------------------------------------------
+[ thread ]*/
+#thread-page {
+  height: 100%;
+  width: 25%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background-color: #eee;
+  overflow-x: hidden;
+  padding-top: 20px;
+  padding-left: 10px;
+}
+
+
+#thread-page-title {
+  color: #111;
+  padding-left: 3px;
+}
+
+#thread-page-container {
+  border: 2px solid grey;
+  padding-left: 15px;
+  height: 60%;
+  width: 23%;
+  position: fixed;
+  z-index: 1;
+  top: 10%;
+  right: 1%;
+  background-color: white;
+  overflow-x: hidden;
+}
+
+
+.thread-page-content {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin-left: 5px;
+  margin: 10px 0;
+  overflow-x: hidden;
+  margin-right: 20px;
+}
+
+.thread-page-content img {
+  float: left;
+  max-width: 30px;
+  width: 100%;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+
+.thread-page-content p {
+  color: #666666;
+  margin: 0px;
+}
+
+.thread-page-content span {
+  float: right;
+  color: #aaa;
+  font-size: 12px;
+}
+
+.thread-page-send-form-container {
+  border: 2px solid grey;
+  padding-left: 15px;
+  height: 10%;
+  width: 23%;
+  position: fixed;
+  z-index: 1;
+  bottom: 10%;
+  right: 1%;
+  background-color: white;
+  overflow-x: hidden;
+}
+
+#thread-close-btn {
+  position: fixed;
+  z-index: 1;
+  bottom: 0;
+  padding-bottom: 20px;
+  background-color: #eee; 
+}
+
+#thread-close-btn {
+  font-family: Arial;
+  font-size: 16px;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 0 20px;
+  margin-bottom: 10px;
+  width: 80px;
+  height: 30px;
+  background-color: #57b846;
+  border-radius: 20px;
+}
+
+#thread-close-btn:hover  {
+  background-color: #333333;
+  transition: 0.5s;
+}
+
+#thread-page-replyid {
+  display: none;
+}
+
+

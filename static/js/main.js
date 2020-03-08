@@ -44,6 +44,9 @@ $("#login-login-btn").click(function() {
             if (status == false) {
                 alert("Unable to login!");
             } else {
+                localStorage.setItem("email", email);
+                localStorage.setItem("token", status['token']); ////////
+
                 loginPage.style.display = "none";
                 let loadPage = new Promise((resolve, reject) => {
                     channelPage.style.display = "block";
@@ -275,7 +278,7 @@ function sendMessage() {
         url: "/api/postmessage",
         data: {
             "channelName": channelName,
-            "email": "rxli@uchicago.edu", // localStorage?
+            "email": localStorage.getItem("email"), // localStorage?
             "message": message
         },
         success: function(messages) {
@@ -284,3 +287,14 @@ function sendMessage() {
         }
     });
 }
+
+
+// thread-page
+$("#thread-close-btn").click(function() {
+    hideThreadPage();
+});
+
+$("#thread-page-send-btn").click(function() {
+    sendThreadMessage();
+});
+
