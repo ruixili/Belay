@@ -195,7 +195,7 @@ function messageTemplate(message, countDict) {
     div.appendChild(span);
 
     div.onclick = function() {
-        isLoad = loadThreadMessage(message);
+        isLoad = loadThreadMessage(message[1]);
         showThreadPage(message);
     }
 

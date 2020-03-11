@@ -10,12 +10,7 @@ $("#thread-page-send-btn").click(function() {
     sendThreadMessage();
 });
 
-function loadThreadMessage(message) {
-    messageusername = message[0];
-    threadMessageID = message[1];
-    time = message[2];
-    content = message[3];
-
+function loadThreadMessage(threadMessageID) {
     $.ajax({
         async: true,
         type: "POST",
@@ -67,7 +62,6 @@ function threadMessageTemplate(message) {
 
 
 function showThreadPage(message) {
-    console.log("showThreadPage as block!!!!!!!!!!!!!");
     document.getElementById("thread-page").style.display = "block";
     document.getElementById("thread-page-title").innerText = message[0] + ": " + message[3];
     document.getElementById("thread-page-replyid").innerText = message[1];
@@ -102,6 +96,8 @@ function sendThreadMessage() {
         success: function(status) {
             console.log(status);
             document.getElementById("thread-page-send-text-area").value = '';
+            
+            loadThreadMessage(replyid);
         }
     });
 }

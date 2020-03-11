@@ -153,7 +153,7 @@ def loadthreadmassage():
 
 @app.route('/api/sendthreadmessage', methods=['POST'])
 def sendthreadmessage():
-    print("----- calling sendthreadmessage method!")
+    # print("----- calling sendthreadmessage method!")
     message = {key: request.form.get(key) for key in request.form}
     print(message)
     status = db_manager.sendThreadMessage(message)

@@ -1,16 +1,16 @@
 TODO
 
-- thread send message and fetching
-- chat-page # of replies
- - promise issue
+
 - token and authetication
- - what is the primary key?
+ - what is the primary key? email
 - response status
 - channel creator
  - able to delete a channel
 - responsive
  - phone
-- img
+ 
+- img (only one are allowed)
+- thread send message and fetching (no fetching yet!)
 
 
 - Check: Channel names are unique strings of numbers, letters, and underscores (and no spaces)
