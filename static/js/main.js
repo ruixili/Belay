@@ -26,6 +26,7 @@ if (pathname == "/") {
 /*
     login page
 */
+
 $("#login-login-btn").click(function() {
     let email = $("#login-login-email").val();
     let password = $("#login-login-password").val();
@@ -123,7 +124,6 @@ $("#login-signup-btn").click(function() {
     });
 });
 
-
 /*
     forget password page
 */
@@ -196,105 +196,3 @@ $("#change-password-btn").click(function() {
         }
     });
 });
-
-/*
-    channel page
-*/
-
-// Sidebar
-$("#sidebar-create-btn").click(function() {
-    document.getElementById("sidebar-create-channel").style.display = "block";
-    document.getElementById("sidebar-create-btn").style.display = "none";
-});
-
-$("#sidebar-create-channel-btn").click(function() {
-    let channelName = document.getElementById("sidebar-create-channel-name").value;
-    console.log(channelName);
-    if (!channelName) {
-        alert("Channel name can't be empty!");
-        return;
-    }
-    createChannel(channelName);
-    document.getElementById("sidebar-create-btn").style.display = "block";
-    document.getElementById("sidebar-create-channel").style.display = "none";
-});
-
-
-// chat-page
-$("#chat-page-more-message-btn").click(function() {
-    let channelName = document.getElementById("chat-page-title-name").innerText;
-    console.log("User wants to load more messages for channel: ", channelName);
-
-    let messageIDs = document.querySelectorAll("#msg-id");
-    let firstMessageDiv = messageIDs[0];
-
-    if (firstMessageDiv) {
-        firstMessageID = firstMessageDiv.innerText;
-    } else {
-        return;
-    }
-
-    console.log("the user wants to load more messages for channel: ", channelName);
-    $.ajax({
-        async: true,
-        type: "POST",
-        url: "/api/moremessage",
-        data: {
-            "channelName": channelName,
-            "firstLoad": false,
-            "firstMessageID": firstMessageID
-        },
-        success: function(messages) {
-            console.log("the messages from api" + messages);
-            if (!messages || messages.length == 0) {
-                console.log("going to hide the btn");
-                hideMoremessage();
-                return;
-            } else {
-                insertWords(messages);
-            }
-        }
-    });
-});
-
-$("#chat-page-send-text-area").keypress(function(e) {
-    if (e.which === 13) {
-        sendMessage();
-    }
-});
-
-$("#chat-page-send-btn").click(function() {
-    sendMessage();
-});
-
-function sendMessage() {
-    let channelName = document.getElementById("chat-page-title-name").innerText;
-    let message = document.getElementById("chat-page-send-text-area").value;
-
-    console.log("The user send a message to Channel: " + channelName + " : " + message);
-    $.ajax({
-        async: true,
-        type: "POST",
-        url: "/api/postmessage",
-        data: {
-            "channelName": channelName,
-            "email": localStorage.getItem("email"), // localStorage?
-            "message": message
-        },
-        success: function(messages) {
-            console.log(messages);
-            document.getElementById("chat-page-send-text-area").value = '';
-        }
-    });
-}
-
-
-// thread-page
-$("#thread-close-btn").click(function() {
-    hideThreadPage();
-});
-
-$("#thread-page-send-btn").click(function() {
-    sendThreadMessage();
-});
-

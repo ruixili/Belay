@@ -213,7 +213,7 @@ class dbManager:
     def loadThreadMessage(self, thread):
         conn = self.connectDB()
         cursor = conn.cursor()
-        query = "SELECT u.username, m.id, m.timestamp, m.text FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.replyId = (%s) ORDER BY m.id DESC"
+        query = "SELECT u.username, m.id, m.timestamp, m.text AS replyCount FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.replyId = (%s) ORDER BY m.id DESC"
         try:
             cursor.execute(query, (thread['threadMessageID'], ))
             messages = cursor.fetchall()
