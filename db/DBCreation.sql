@@ -13,6 +13,7 @@ CREATE TABLE users
 
 CREATE TABLE channels(
     channelname VARCHAR(60) NOT NULL,
+    creator VARCHAR(60) NOT NULL,
     timestamp DATETIME DEFAULT NOW(),
     PRIMARY KEY (channelname)
 );

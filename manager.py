@@ -167,8 +167,17 @@ class dbManager:
                 query = "SELECT u.username, m.id, m.timestamp, m.text FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.channelname = (%s) AND m.replyid IS NULL AND m.id < (%s) AND m.id > (%s) - 20 + 1 ORDER BY m.id DESC"
                 cursor.execute(query, (channel["channelName"], channel['firstMessageID'], channel['firstMessageID']))
                 print(query)
-            messages = cursor.fetchall()
+            messages = {"content":cursor.fetchall()}
             print(messages)
+
+            # get message count
+            query = "SELECT replyid, COUNT(*) AS cnt FROM messages WHERE channelname = (%s) GROUP BY replyid"
+            cursor.execute(query, (channel["channelName"],))
+            count = cursor.fetchall()
+            print(count)
+            messages["count"] = count
+
+            print("message from moremessage api", messages)
             return messages
         except Exception as e:
             print(e)

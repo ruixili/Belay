@@ -97,7 +97,7 @@ function firstLoadMessage(channelName) {
   showUnreadForOtherChannel
 */
 
-    showUnreadForOtherChannel(channelName);
+    // showUnreadForOtherChannel(channelName);
 
 	// load and call getMessage
     console.log("First loading for channel: ", channelName);
@@ -114,7 +114,7 @@ function firstLoadMessage(channelName) {
             if (!messages || messages.length == 0) {
                 hideMoremessage(channelName);
             } else {
-                storeLastSeenMessageID(channelName, messages);
+                storeLastSeenMessageID(channelName, messages['content']);
                 insertWords(messages);
             }
 
@@ -122,7 +122,7 @@ function firstLoadMessage(channelName) {
   getMessage
 */
 
-            getMessage(channelName);
+            // getMessage(channelName);
         }
     });
 }
@@ -141,51 +141,24 @@ function storeLastSeenMessageID(channelName, messages) {
 }
 
 
-function getReplyCount(message) {
-    threadMessageID = message[1];
-    console.log("getReplyCount threadMessageID " + threadMessageID);
-
-    $.ajax({
-        async: true,
-        type: "POST",
-        url: "/api/loadthreadmassage",
-        data: {
-            "threadMessageID": threadMessageID
-        },
-        success: function(messages) {
-            console.log("getReplyCount " + messages);
-            console.log("getReplyCount " + messages.length);
-            if (!messages || messages.length == 0) {
-                return 0;
-            }
-            return messages.length;
-        }
-    });
-}
-
-
 function insertWords(messages) {
     let moreMessageDiv = document.getElementById("chat-page-content-container").firstChild;
 
-    for (var i = 0; i < messages.length; i++) {
-        let template = messageTemplate(messages[i]);
-        moreMessageDiv.parentNode.insertBefore(template, moreMessageDiv.nextSibling.nextSibling);
+    let countDict = {};
+    for (var i = 0; i < messages["count"].length; i++) {
+        countDict[messages["count"][i][0]] = messages["count"][i][1];
+    }
 
-        // let getTemplate = new Promise((resolve, reject) => {
-        //     let template = messageTemplate(messages[i]);
-        //     window.setTimeout(
-        //         function() {
-        //             resolve(template);
-        //     }, 1000);
-        // })
-        // getTemplate.then((template) => {
-        //     moreMessageDiv.parentNode.insertBefore(template, moreMessageDiv.nextSibling.nextSibling);
-        // });
+    console.log(countDict);
+
+    for (var i = 0; i < messages["content"].length; i++) {
+            let template = messageTemplate(messages["content"][i], countDict);
+            moreMessageDiv.parentNode.insertBefore(template, moreMessageDiv.nextSibling.nextSibling);
     }
 }
 
 
-function messageTemplate(message) {
+function messageTemplate(message, countDict) {
     let div = document.createElement("div");
     div.setAttribute("class", "chat-page-content");
 
@@ -217,11 +190,6 @@ function messageTemplate(message) {
         div.appendChild(p);
     }
 
-
-    // let a = document.createElement("a");
-    // a.innerText = replyCount;
-    // div.appendChild(a);
-
     let span = document.createElement("span");
     span.innerText = message[2];
     div.appendChild(span);
@@ -231,14 +199,14 @@ function messageTemplate(message) {
         showThreadPage(message);
     }
 
-    // let getCount = new Promise((resolve, reject) => {
-    //     let replyCount = getReplyCount(message);
-    //     console.log("insertWords: " + replyCount);
-    //     window.setTimeout(
-    //         function() {
-    //             resolve(replyCount);
-    //         }, 1000);
-    // })
+
+    let replyCount = countDict[message[1]];
+    if (replyCount) {
+        let a = document.createElement("a");
+        a.setAttribute("class", "chat-page-reply-count");
+        a.innerText = "(# of reply: " + replyCount + ")";
+        div.appendChild(a);
+    }
 
     return div;
 }
