@@ -150,6 +150,7 @@ def loadthreadmassage():
     messages = db_manager.loadThreadMessage(thread)
     return jsonify(messages)
 
+
 @app.route('/api/sendthreadmessage', methods=['POST'])
 def sendthreadmessage():
     print("----- calling sendthreadmessage method!")

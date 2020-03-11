@@ -61,12 +61,17 @@
   margin-right: 20px;
 }
 
-.chat-page-content img {
+#Avatar {
   float: left;
   max-width: 30px;
   width: 100%;
   margin-right: 20px;
   border-radius: 50%;
+}
+
+#chat-page-img {
+  max-width: 200px;
+  width: 100%;
 }
 
 .chat-page-content p {

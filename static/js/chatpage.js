@@ -122,7 +122,7 @@ function firstLoadMessage(channelName) {
   getMessage
 */
 
-            // getMessage(channelName);
+            getMessage(channelName);
         }
     });
 }
@@ -191,7 +191,7 @@ function messageTemplate(message) {
 
     let img = document.createElement("img");
     img.setAttribute("src", "http://localhost:5000/static/images/avatar-01.jpg");
-    img.setAttribute("alt", "Avatar");
+    img.setAttribute("id", "Avatar");
     div.appendChild(img);
 
     let messageid = document.createElement("div");
@@ -200,9 +200,23 @@ function messageTemplate(message) {
     messageid.innerText = message[1];
     div.appendChild(messageid);
 
-    let p = document.createElement("p");
-    p.innerText = message[0] + ": " + message[3];
-    div.appendChild(p);
+    // handle the img inside text
+    let url = getImageURLs(message[3]);
+    if (url) {
+        var chatPageImg = document.createElement("img");
+        chatPageImg.setAttribute("src", url);
+        chatPageImg.setAttribute("id", "chat-page-img");
+        let p = document.createElement("p");
+        var msg = message[3].replace(url, "");
+        p.innerText = message[0] + ": " + msg;
+        div.appendChild(p);
+        div.append(chatPageImg);
+    } else {
+        let p = document.createElement("p");
+        p.innerText = message[0] + ": " + message[3];
+        div.appendChild(p);
+    }
+
 
     // let a = document.createElement("a");
     // a.innerText = replyCount;
@@ -229,6 +243,21 @@ function messageTemplate(message) {
     return div;
 }
 
+// Image
+function getImageURLs(message) {
+    const regex = /https\:\/\/[a-zA-Z0-9.\-/]*\/[a-zA-Z_.\-]*.(jpeg|jpg|gif|png)+/g;
+    let array = [...message.matchAll(regex)];
+    // let res = [];
+    // for (var i = 0; i < array.length; i++) {
+    //     console.log(array[i][0]);
+    // }
+    // assume single url
+    if (array == null || array[0] == null) {
+        return null;
+    }
+    return array[0][0];
+}
+
 
 function hideMoremessage(channelName) {
     console.log("No more history messages for channel: ", channelName);
@@ -252,3 +281,4 @@ function appendWords(messages) {
         console.log(messages[i]);
     }
 }
+
