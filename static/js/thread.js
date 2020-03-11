@@ -1,4 +1,7 @@
-// thread-page
+/*
+ * thread-page 
+ */
+
 $("#thread-close-btn").click(function() {
     hideThreadPage();
 });

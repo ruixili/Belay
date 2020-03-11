@@ -1,4 +1,7 @@
-// Sidebar
+/*
+ * Sidebar 
+ */
+ 
 
 $("#sidebar-channel").click(function() {
 	channelName = $("#sidebar-channel").innerText;

@@ -6,7 +6,9 @@
 
     <link rel="stylesheet" type="text/css" href="http://localhost:5000/static/css/main.css">
     <link rel="stylesheet" type="text/css" href="http://localhost:5000/static/css/sidebar.css">
+    <link rel="stylesheet" type="text/css" href="http://localhost:5000/static/css/chatpage.css">
     <link rel="stylesheet" type="text/css" href="http://localhost:5000/static/css/thread.css">
+    <link rel="stylesheet" type="text/css" href="http://localhost:5000/static/css/dropdown.css">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -163,9 +165,15 @@
 
 	<!-- channel-page -->
 	<div id="channel-page" class="channel-page" style="display: none;">
+		<div class="sidebar-welcome">
+			<h3>Welcome!</h3>
+			<p id="sidebar-welcome-username"></p>
+			<p id="sidebar-welcome-email"></p>
+		</div>
 		<!-- Sidebar -->
 		<div class="sidebar">
 			<h3 class="sidebar-title">Channel</h3>
+
 		    <div id="sidebar-container">
 
 			    <a id="sidebar-create-btn">+ Create</a>
@@ -178,10 +186,17 @@
 					</div>
 
 					<div class="container-login-form-btn">
+						<button id="sidebar-create-channel-close-btn" class="sidebar-create-channel-close-btn">
+							Close
+						</button>
+					</div>
+					
+					<div class="container-login-form-btn">
 						<button id="sidebar-create-channel-btn" class="sidebar-create-channel-btn">
 							Create
 						</button>
 					</div>
+
 				  </div>
 				</div>			
 			</div>
@@ -234,8 +249,26 @@
 			        <button id="thread-page-send-btn">Send</button>
 			    </div>
 			</div>
-
 		</div>
+
+		<!-- Settings -->
+		<div class="dropdown">
+		  <button onclick="dropdown()" class="dropbtn"> = Settings</button>
+		  <div id="myDropdown" class="dropdown-content">
+		    <a id="dropdown-content-change-username" class="txt2">Change Username</a>
+		    <a id="dropdown-content-change-email" class="txt2">Change Email</a>
+		  </div>
+		</div>
+
+<!-- 		<div id="dropdown-changeUsername">
+			<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+			This is an alert box.
+		</div>
+
+		<div id="dropdown-changeEmail">
+			<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+			This is an alert box.
+		</div> -->
 	</div>
 
 
@@ -243,6 +276,7 @@
 	<script src="http://localhost:5000/static/js/thread.js"></script>
 	<script src="http://localhost:5000/static/js/sidebar.js"></script>
 	<script src="http://localhost:5000/static/js/chatpage.js"></script>
+	<script src="http://localhost:5000/static/js/dropdown.js"></script>
 
 </body>
 </html>

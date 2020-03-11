@@ -1,4 +1,7 @@
-// chat-page
+/*
+ * chat-page 
+ */
+
 $("#chat-page-more-message-btn").click(function() {
     let channelName = document.getElementById("chat-page-title-name").innerText;
     console.log("User wants to load more messages for channel: ", channelName);
@@ -119,7 +122,7 @@ function firstLoadMessage(channelName) {
   getMessage
 */
 
-            getMessage(channelName);
+            // getMessage(channelName);
         }
     });
 }

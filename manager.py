@@ -117,6 +117,7 @@ class dbManager:
             cursor.close()
             conn.close()
 
+
     def createChannel(self, channel):
         # check validity
         conn = self.connectDB()

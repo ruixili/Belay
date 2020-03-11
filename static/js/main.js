@@ -13,7 +13,6 @@ console.log("pathname: ", pathname);
 if (pathname == "/") {
     console.log("in login page");
     loginPage.style.display = "block";
-
 } else {
     // change password
     console.log("in change password page");
@@ -60,6 +59,11 @@ $("#login-login-btn").click(function() {
                 })
 
                 loadPage.then((successMessage) => {
+                    let welcomeUsername = document.getElementById("sidebar-welcome-username");
+                    welcomeUsername.innerText = email;
+                    // let welcomeEmail = document.getElementById("sidebar-welcome-email");
+                    // welcomeEmail.innerText = "Welcome " + username;
+
                     let channelName = document.getElementById("chat-page-title-name").innerText;
                     console.log("I am loading message for Channel: " + channelName);                    
                     firstLoadMessage(channelName);
