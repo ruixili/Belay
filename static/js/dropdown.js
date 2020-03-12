@@ -21,12 +21,13 @@ window.onclick = function(event) {
         openDropdown.classList.remove('show');
       }
     }
-  }
+  }  
+
 }
 
 
 $("#dropdown-content-change-username").click(function() {
-  changeUsername.style.display = "block";
+  changeUsernamePage.style.display = "block";
   channelPage.style.display = "none";
 });
 
@@ -34,4 +35,42 @@ $("#dropdown-content-change-username").click(function() {
 $("#dropdown-content-change-email").click(function() {
   changeEmail.style.display = "block";
   channelPage.style.display = "none";
+});
+
+$("#change-username-btn").click(function() {
+  console.log("the user change the username");
+  let email = window.localStorage.getItem("email");
+  let username = $("#change-username").val();
+
+  console.log(email, username);
+
+  $.ajax({
+      async: true,
+      type: "POST",
+      url: "/api/changeusername",
+      data: {
+          "email": email,
+          "username": username
+      },
+      success: function(status) {
+          let loadPage = new Promise((resolve, reject) => {
+              channelPage.style.display = "block";
+              changeUsernamePage.style.display = "none";
+              window.setTimeout(
+                  function() {
+                      resolve("Success!");
+                  }, 500);
+          })
+
+          loadPage.then((successMessage) => {
+              let welcomeUsername = document.getElementById("sidebar-welcome-username");
+              welcomeUsername.innerText = "Username: " + username;
+
+              let channelName = document.getElementById("chat-page-title-name").innerText;
+              console.log("I am loading message for Channel: " + channelName);                    
+              firstLoadMessage(channelName);
+          });
+      }
+  });
+
 });

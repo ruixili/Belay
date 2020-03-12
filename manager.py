@@ -50,18 +50,19 @@ class dbManager:
             data = cursor.fetchall()
             # print(data)
             # print(len(data))
+            return data
             # print(user['password'].encode('utf-8'))
             # print(data[0][2])
-            success = bcrypt.checkpw(user['password'].encode('utf-8'), data[0][2])
-            if len(data) == 1 and success:
+            # success = bcrypt.checkpw(user['password'].encode('utf-8'), data[0][2])
+            # if len(data) == 1 and success:
                 # print("It's true!")
-                return True
+                # return data
         except Exception as e:
             print(e)
         finally:
             cursor.close()
             conn.close()
-        return True # initializer for ctype 'void *' must be a cdata pointer, not bytearray
+        return False # initializer for ctype 'void *' must be a cdata pointer, not bytearray
 
 
     def signup(self, user):
@@ -97,6 +98,22 @@ class dbManager:
         except Exception as e:
             print(e)
             return "Fail to change password!"
+        finally:
+            cursor.close()
+            conn.close()
+
+
+    def changeUsername(self, user):
+        conn = self.connectDB()
+        cursor = conn.cursor()
+        query = "UPDATE users SET username = %s WHERE email = %s"
+        try:
+            cursor.execute(query, (user['username'], user['email']))
+            conn.commit()
+            return "Success!"
+        except Exception as e:
+            print(e)
+            return "Fail to change username!"
         finally:
             cursor.close()
             conn.close()

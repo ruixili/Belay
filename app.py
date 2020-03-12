@@ -9,8 +9,6 @@ app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 db_manager = manager.dbManager()
 
-chats = {}
-
 # helper functions
 session_tokens = set()
 def generate_session_token():
@@ -19,21 +17,6 @@ def generate_session_token():
         session_token =  ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
     
     return session_token
-
-magic_keys = set()
-def generate_magic_key():
-    magic_key =  ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(12))
-    while (magic_key in magic_keys):
-        magic_key =  ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(12))
-    
-    return magic_key
-
-def generate_chat_id():
-    chat_id = ''.join(random.choice(string.digits) for _ in range(6))
-    while (chat_id in chats):
-        chat_id = ''.join(random.choice(string.digits) for _ in range(6))
-    
-    return chat_id
 
 
 @app.route('/')
@@ -48,9 +31,10 @@ def login ():
     # print("----- calling login method!")
     user = {key: request.form.get(key) for key in request.form}
     # print(user)
-    status = db_manager.login(user)
+    data = db_manager.login(user)
+    token = generate_session_token()
     # print(status)
-    return jsonify(status)
+    return jsonify({"data": data, "token": token})
 
 
 @app.route('/api/signup', methods=['POST'])
@@ -81,6 +65,16 @@ def changepassword():
     # print(user)
 
     status = db_manager.changePassword(user)
+    return jsonify(status)
+
+
+@app.route('/api/changeusername', methods=['POST'])
+def changeusername():
+    print("----- calling changeusername method!")
+    user = {key: request.form.get(key) for key in request.form}
+    # print(user)
+
+    status = db_manager.changeUsername(user)
     return jsonify(status)
 
 
@@ -144,7 +138,7 @@ def getunreadmessagecount():
 
 @app.route('/api/loadthreadmassage', methods=['POST'])
 def loadthreadmassage():
-    print("----- calling loadthreadmassage method!")
+    # print("----- calling loadthreadmassage method!")
     thread = {key: request.form.get(key) for key in request.form}
     print(thread)
     messages = db_manager.loadThreadMessage(thread)

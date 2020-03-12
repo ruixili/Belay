@@ -2,8 +2,10 @@
  * thread-page 
  */
 
+
 $("#thread-close-btn").click(function() {
     hideThreadPage();
+    isThreadPageOpen = false;
 });
 
 $("#thread-page-send-btn").click(function() {
@@ -96,8 +98,18 @@ function sendThreadMessage() {
         success: function(status) {
             console.log(status);
             document.getElementById("thread-page-send-text-area").value = '';
-            
+            emptyThreadChatArea();
             loadThreadMessage(replyid);
         }
     });
 }
+
+function emptyThreadChatArea() {
+    let threadMessageDiv = document.getElementById("thread-page-container");
+    console.log(threadMessageDiv);
+
+    while (threadMessageDiv.childElementCount > 2) {
+        threadMessageDiv.removeChild(threadMessageDiv.firstChild);
+    }
+}
+

@@ -97,7 +97,7 @@ function firstLoadMessage(channelName) {
   showUnreadForOtherChannel
 */
 
-    // showUnreadForOtherChannel(channelName);
+    showUnreadForOtherChannel(channelName);
 
 	// load and call getMessage
     console.log("First loading for channel: ", channelName);
@@ -122,7 +122,7 @@ function firstLoadMessage(channelName) {
   getMessage
 */
 
-            // getMessage(channelName);
+            getMessage(channelName);
         }
     });
 }
@@ -157,6 +157,7 @@ function insertWords(messages) {
     }
 }
 
+var isThreadPageOpen = false;
 
 function messageTemplate(message, countDict) {
     let div = document.createElement("div");
@@ -195,7 +196,11 @@ function messageTemplate(message, countDict) {
     div.appendChild(span);
 
     div.onclick = function() {
+        if (isThreadPageOpen) {
+            hideThreadPage();
+        }
         isLoad = loadThreadMessage(message[1]);
+        isThreadPageOpen = true;
         showThreadPage(message);
     }
 

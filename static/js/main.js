@@ -5,6 +5,8 @@ var signupPage = document.getElementById("signup-page");
 var forgetPasswordPage = document.getElementById("forget-password-page");
 var changePasswordPage = document.getElementById("change-password-page");
 var channelPage = document.getElementById("channel-page");
+var changeUsernamePage = document.getElementById("change-username-page");
+
 
 let pathname = window.location.pathname;
 console.log("pathname: ", pathname);
@@ -39,13 +41,13 @@ $("#login-login-btn").click(function() {
             "email": email,
             "password": password
         },
-        success: function(status) {
-            console.log(status);
-            if (status == false) {
+        success: function(repsonse) {
+            console.log("The repsonse from login method: " + repsonse['data']);
+            if (repsonse['data'] == null) {
                 alert("Unable to login!");
             } else {
                 localStorage.setItem("email", email);
-                localStorage.setItem("token", status['token']); ////////
+                localStorage.setItem("token", repsonse['token']); ////////
 
                 loginPage.style.display = "none";
                 let loadPage = new Promise((resolve, reject) => {
@@ -59,10 +61,11 @@ $("#login-login-btn").click(function() {
                 })
 
                 loadPage.then((successMessage) => {
+
                     let welcomeUsername = document.getElementById("sidebar-welcome-username");
-                    welcomeUsername.innerText = email;
-                    // let welcomeEmail = document.getElementById("sidebar-welcome-email");
-                    // welcomeEmail.innerText = "Welcome " + username;
+                    welcomeUsername.innerText = "Username: " + repsonse['data'][0][1]; 
+                    let welcomeEmail = document.getElementById("sidebar-welcome-email");
+                    welcomeEmail.innerText = "Email: " + email;
 
                     let channelName = document.getElementById("chat-page-title-name").innerText;
                     console.log("I am loading message for Channel: " + channelName);                    
