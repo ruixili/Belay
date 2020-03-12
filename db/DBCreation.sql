@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS belay;
+DROP DATABASE IF EXISTS rxli;
 CREATE DATABASE belay CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;;
-USE belay;
+USE rxli;
 
 CREATE TABLE users
 (
@@ -31,6 +31,7 @@ CREATE TABLE messages(
 );
 
 
+-- initialization
 INSERT INTO users VALUES("rxli@uchicago.edu", "admin", "123456", NOW());
 INSERT INTO channels VALUES("Cat", NOW());
 INSERT INTO channels VALUES("Dog", NOW());

@@ -1,5 +1,44 @@
 /*------------------------------------------------------------------
 [ menu ]*/
+
+.openChannel {
+  z-index: 2;
+  font-size: 23.4px;
+  color: #111;
+  padding-top: 50px;
+  padding-left: 3px;
+  display: none;
+}
+
+.openChannel:hover, .openChannel:focus {
+  color: #57b846;
+}
+
+@media screen and (max-width: 900px) {
+  .openChannel {
+    display: block;
+  }
+}
+
+.display-channel {
+  margin-top: 10px;
+  margin-right: 5px;
+  color: #111;
+  padding-right: 3px;
+  border: none;
+  cursor: pointer;
+}
+
+.display-channel {
+  z-index: 2;
+  float: left;
+  position: relative;
+  display: inline;
+}
+
+.display-channel a:hover {background-color: #57b846;}
+
+
 .dropdown {
   margin-top: 10px;
   margin-right: 5px;
@@ -10,6 +49,7 @@
 }
 
 .dropbtn {
+  z-index: 2;
   font-size: 23.4px;
   color: #111;
   padding-left: 3px;
@@ -21,6 +61,7 @@
 }
 
 .dropdown {
+  z-index: 2;
   float: right;
   position: relative;
   display: inline-block;
@@ -34,7 +75,7 @@
   overflow: auto;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   right: 0;
-  z-index: 1;
+  z-index: 2;
 }
 
 .dropdown-content a {
@@ -47,3 +88,4 @@
 .dropdown a:hover {background-color: #57b846;}
 
 .show {display: block;}
+

@@ -18,6 +18,12 @@
   padding-top: 10px;
 }
 
+@media screen and (max-width: 900px) {
+  .chat-page-title-container {
+    width: 90%;
+  }
+}
+
 #chat-page-title-name {
   text-decoration: none;
   font-size: 40px;

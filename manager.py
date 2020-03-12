@@ -18,7 +18,7 @@ def forgetPassword(user):
         subject='Reseting your Belay password',
         html_content='Click this link to reset your password <strong>{}</strong>!'.format(magic_link))
     try:
-        sg = SendGridAPIClient(os.environ.get('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'))
+        sg = SendGridAPIClient('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')
         response = sg.send(message)
         return "Link sent to your mailbox!"
     except Exception as e:
@@ -34,7 +34,7 @@ def hashPassword(user):
 
 class dbManager:
     def connectDB(self):
-        conn = mysql.connector.connect(user="root", database="belay", password="1liruixi")
+        conn = mysql.connector.connect(user="root", database="rxli", password="1liruixi")
         # if conn:
         #     print("Connected to database!")
         return conn

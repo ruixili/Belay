@@ -236,6 +236,20 @@
 			    <h1 id="chat-page-title-name">Cat</h1>
 			</div>
 
+			<!-- channel-btn -->
+			<div class="display-channel">
+			  <button onclick="displayChannel()" class="openChannel"> = Open Channels</button>
+			</div>
+
+			<!-- Settings -->
+			<div class="dropdown">
+			  <button onclick="dropdown()" class="dropbtn"> = Settings</button>
+			  <div id="myDropdown" class="dropdown-content">
+			    <a id="dropdown-content-change-username" class="txt2">Change Username</a>
+			    <a id="dropdown-content-change-email" class="txt2">Change Email</a>
+			  </div>
+			</div>
+
 			<div class="chat-page-content-big-container">
 				<div id="chat-page-content-container">
 					<div id="chat-page-more-message" style="display: block;">
@@ -276,15 +290,6 @@
 			        <button id="thread-page-send-btn">Send</button>
 			    </div>
 			</div>
-		</div>
-
-		<!-- Settings -->
-		<div class="dropdown">
-		  <button onclick="dropdown()" class="dropbtn"> = Settings</button>
-		  <div id="myDropdown" class="dropdown-content">
-		    <a id="dropdown-content-change-username" class="txt2">Change Username</a>
-		    <a id="dropdown-content-change-email" class="txt2">Change Email</a>
-		  </div>
 		</div>
 
 <!-- 		<div id="dropdown-changeUsername">

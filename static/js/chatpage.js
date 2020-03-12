@@ -140,11 +140,10 @@ function storeLastSeenMessageID(channelName, messages) {
     // }
 }
 
-
+var countDict = {};
 function insertWords(messages) {
     let moreMessageDiv = document.getElementById("chat-page-content-container").firstChild;
 
-    let countDict = {};
     for (var i = 0; i < messages["count"].length; i++) {
         countDict[messages["count"][i][0]] = messages["count"][i][1];
     }
@@ -204,6 +203,11 @@ function messageTemplate(message, countDict) {
         showThreadPage(message);
     }
 
+    console.log(message[1]);
+    console.log(countDict);
+    if (countDict[message[1]] === undefined) {
+        return div;
+    }
 
     let replyCount = countDict[message[1]];
     if (replyCount) {
@@ -215,6 +219,80 @@ function messageTemplate(message, countDict) {
 
     return div;
 }
+
+
+// getMessage for current channel
+var curChannelGetMessage;
+
+function getMessage(channelName) {
+  clearInterval(curChannelGetMessage);
+  curChannelGetMessage = setInterval(function() {
+    console.log("Getting new messages for channel: ", channelName);
+    let messageIDs = document.querySelectorAll("#msg-id");
+    let lastMessageDiv = messageIDs[messageIDs.length - 1];
+
+    if (lastMessageDiv) {
+        lastMessageID = lastMessageDiv.innerText;
+    } else {
+        lastMessageID = 0;
+    }
+    
+    $.ajax({
+        async: true,
+        type: "POST",
+        url: "/api/getmessage",
+        data: {
+            "channelName": channelName,
+            "lastMessageID": lastMessageID
+        },
+        success: function(messages) {
+            console.log("the messages from getmessage api: " + messages);
+            if (messages && messages.length != 0) {
+                storeLastSeenMessageID(channelName, messages);
+                appendWords(messages);
+            }
+        }
+    });
+
+  }, 1000);
+}
+
+// get message count for background channel
+var curShowUnreadMessageCount;
+
+function showUnreadForOtherChannel(channelName) {
+  clearInterval(curShowUnreadMessageCount);
+  curShowUnreadMessageCount = setInterval(function() {
+    for (var cn in lastSeenMessageDict){
+        if (cn != channelName) {
+            // make other channels fetch message count
+            console.log("showUnreadMessageCount for Channel: " + cn + " lastMessageID: " + lastSeenMessageDict[cn]);
+            // channelName, lastSeenMessageID
+            showUnreadMessageCount(cn, lastSeenMessageDict[cn]);
+        }
+    }
+  }, 1000);
+}
+
+var lastSeenMessageDict = {};
+function showUnreadMessageCount(channelName, lastMessageID) {
+    $.ajax({
+        async: true,
+        type: "POST",
+        url: "/api/getunreadmessagecount",
+        data: {
+            "channelName": channelName,
+            "lastMessageID": lastMessageID
+        },
+        success: function(count) {
+            console.log("the messages from getunreadmessagecount api: " + count);
+            if (count) {
+                showUnreadOnSidebar(channelName, count);
+            }
+        }
+    });
+}
+
 
 // Image
 function getImageURLs(message) {
@@ -249,7 +327,7 @@ function appendWords(messages) {
     var container = document.getElementById("chat-page-content-container");
 
     for (var i = 0; i < messages.length; i++) {
-        let template = messageTemplate(messages[i]);
+        let template = messageTemplate(messages[i], countDict);
         container.append(template);
         console.log(messages[i]);
     }
