@@ -39,8 +39,7 @@ $("#dropdown-content-change-email").click(function() {
 
 $("#change-username-btn").click(function() {
   console.log("the user change the username");
-  let email = window.localStorage.getItem("email");
-  let username = $("#change-username").val();
+  username = $("#change-username").val();
 
   console.log(email, username);
 

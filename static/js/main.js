@@ -1,5 +1,9 @@
 console.log("js is working");
 
+var email;
+var usrename;
+
+
 var loginPage = document.getElementById("login-page");
 var signupPage = document.getElementById("signup-page");
 var forgetPasswordPage = document.getElementById("forget-password-page");
@@ -29,7 +33,7 @@ if (pathname == "/") {
 */
 
 $("#login-login-btn").click(function() {
-    let email = $("#login-login-email").val();
+    email = $("#login-login-email").val();
     let password = $("#login-login-password").val();
     console.log(email, password);
 
@@ -46,9 +50,9 @@ $("#login-login-btn").click(function() {
             if (repsonse['data'] == null) {
                 alert("Unable to login!");
             } else {
-                localStorage.setItem("email", email);
-                localStorage.setItem("token", repsonse['token']); ////////
-
+                // set token for this session
+                document.cookie = "cookie=" + repsonse['token'];
+                
                 loginPage.style.display = "none";
                 let loadPage = new Promise((resolve, reject) => {
                     channelPage.style.display = "block";
@@ -95,8 +99,8 @@ $("#login-forget-password").click(function() {
 
 $("#login-signup-btn").click(function() {
     console.log("singup the user");
-    let email = $("#login-signup-email").val();
-    let username = $("#login-signup-username").val();
+    email = $("#login-signup-email").val();
+    username = $("#login-signup-username").val();
     let password = $("#login-signup-password").val();
     let passwordAgain = $("#login-signup-password-again").val();
 
@@ -137,7 +141,7 @@ $("#login-signup-btn").click(function() {
 
 $("#forget-password-btn").click(function() {
     console.log("the user forget the password and send link to the user");
-    let email = $("#forget-password-email").val();
+    email = $("#forget-password-email").val();
 
     $.ajax({
         async: true,
@@ -169,7 +173,7 @@ $("#forget-password-btn").click(function() {
 
 $("#change-password-btn").click(function() {
     console.log("the user change the password");
-    let email = $("#change-password-email").val();
+    email = $("#change-password-email").val();
     let password = $("#change-password-password").val();
     let passwordAgain = $("#change-password-password-again").val();
 

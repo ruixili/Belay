@@ -48,21 +48,20 @@ class dbManager:
         try:
             cursor.execute(query, (user['email'],))
             data = cursor.fetchall()
-            # print(data)
-            # print(len(data))
-            return data
-            # print(user['password'].encode('utf-8'))
-            # print(data[0][2])
-            # success = bcrypt.checkpw(user['password'].encode('utf-8'), data[0][2])
-            # if len(data) == 1 and success:
-                # print("It's true!")
-                # return data
+            print(data)
+            print(len(data))
+            print(user['password'])
+            print(data[0][2])
+            success = bcrypt.checkpw(user['password'].encode('utf-8'), data[0][2].encode('utf-8'))
+            if len(data) == 1 and success:
+                print("It's true!")
+                return data
         except Exception as e:
             print(e)
+            return "Fail to login!"
         finally:
             cursor.close()
             conn.close()
-        return False # initializer for ctype 'void *' must be a cdata pointer, not bytearray
 
 
     def signup(self, user):

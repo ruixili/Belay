@@ -62,7 +62,7 @@ function sendMessage() {
         url: "/api/postmessage",
         data: {
             "channelName": channelName,
-            "email": localStorage.getItem("email"), // localStorage?
+            "email": email, // localStorage?
             "message": message
         },
         success: function(messages) {

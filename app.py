@@ -15,7 +15,7 @@ def generate_session_token():
     session_token =  ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
     while (session_token in session_tokens):
         session_token =  ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
-    
+    session_tokens.add(session_token)
     return session_token
 
 
@@ -33,7 +33,7 @@ def login ():
     # print(user)
     data = db_manager.login(user)
     token = generate_session_token()
-    # print(status)
+    # print(data)
     return jsonify({"data": data, "token": token})
 
 
@@ -60,6 +60,8 @@ def forgetpassword():
 
 @app.route('/api/changepassword', methods=['POST'])
 def changepassword():
+    if request.cookies['cookie'] not in session_tokens:
+        return "", 401
     # print("----- calling changepassword method!")
     user = {key: request.form.get(key) for key in request.form}
     # print(user)
@@ -70,6 +72,8 @@ def changepassword():
 
 @app.route('/api/changeusername', methods=['POST'])
 def changeusername():
+    if request.cookies['cookie'] not in session_tokens:
+        return "", 401
     print("----- calling changeusername method!")
     user = {key: request.form.get(key) for key in request.form}
     # print(user)
@@ -80,7 +84,11 @@ def changeusername():
 
 @app.route('/api/getchannels', methods=['POST'])
 def getchannels ():
-    # print("----- calling getchannels method!")
+    print("----- calling getchannels method!")
+    print(request.cookies['cookie'])
+    print(session_tokens)
+    if request.cookies['cookie'] not in session_tokens:
+        return "", 401
     user = {key: request.form.get(key) for key in request.form}
     # print(user)
 
@@ -91,6 +99,8 @@ def getchannels ():
 
 @app.route('/api/createchannel', methods=['POST'])
 def createchannel ():
+    if request.cookies['cookie'] not in session_tokens:
+        return "", 401
     # print("----- calling createchannel method!")
     channel = {key: request.form.get(key) for key in request.form}
     # print(channel)
@@ -102,6 +112,8 @@ def createchannel ():
 
 @app.route('/api/moremessage', methods=['POST'])
 def moremessage():
+    if request.cookies['cookie'] not in session_tokens:
+        return "", 401
     # print("----- calling moremessage method!")
     channel = {key: request.form.get(key) for key in request.form}
     # print(channel)
@@ -111,6 +123,8 @@ def moremessage():
 
 @app.route('/api/postmessage', methods=['POST'])
 def postmessage():
+    if request.cookies['cookie'] not in session_tokens:
+        return "", 401
     # print("----- calling postmessage method!")
     message = {key: request.form.get(key) for key in request.form}
     # print(message)
@@ -120,6 +134,8 @@ def postmessage():
 
 @app.route('/api/getmessage', methods=['POST'])
 def getmessage():
+    if request.cookies['cookie'] not in session_tokens:
+        return "", 401
     # print("----- calling getmessage method!")
     channel = {key: request.form.get(key) for key in request.form}
     # print(channel)
@@ -129,7 +145,12 @@ def getmessage():
 
 @app.route('/api/getunreadmessagecount', methods=['POST'])
 def getunreadmessagecount():
-    # print("----- calling getunreadmessagecount method!")
+    print("----- calling getunreadmessagecount method!")
+    print(request.cookies['cookie'])
+    print(session_tokens)
+
+    if request.cookies['cookie'] not in session_tokens:
+        return "", 401
     channel = {key: request.form.get(key) for key in request.form}
     # print(channel)
     count = db_manager.getUnreadMessageCount(channel)
@@ -138,7 +159,8 @@ def getunreadmessagecount():
 
 @app.route('/api/loadthreadmassage', methods=['POST'])
 def loadthreadmassage():
-    # print("----- calling loadthreadmassage method!")
+    if request.cookies['cookie'] not in session_tokens:
+        return "", 401
     thread = {key: request.form.get(key) for key in request.form}
     print(thread)
     messages = db_manager.loadThreadMessage(thread)
@@ -147,103 +169,14 @@ def loadthreadmassage():
 
 @app.route('/api/sendthreadmessage', methods=['POST'])
 def sendthreadmessage():
+    if request.cookies['cookie'] not in session_tokens:
+        return "", 401
     # print("----- calling sendthreadmessage method!")
     message = {key: request.form.get(key) for key in request.form}
     print(message)
     status = db_manager.sendThreadMessage(message)
     return jsonify(status)
 
-
-
-
-
-
-@app.route('/api/create', methods=['POST'])
-def create ():
-    req = request.get_json(force=True)
-    url = request.url_root
-
-    user_name = req['name']
-    chat_id = str(generate_chat_id())
-    session_token = str(generate_session_token())
-    magic_key = str(generate_magic_key())
-
-    magic_invite_link = url + 'chat/' + chat_id + '?magic_key=' + magic_key
-
-    ### store the chat info
-    chats[chat_id] = {}
-    # authorized_users
-    chats[chat_id]["authorized_users"] = {}    
-    chats[chat_id]["authorized_users"][session_token] = {"username": user_name, 
-                                                         "expires": datetime.datetime.now()
-                                                                    + datetime.timedelta(hours=6)}
-    # magic key
-    chats[chat_id]["magic_invite_link"] = magic_invite_link
-    # messages
-    chats[chat_id]["messages"] = []
-
-    return {
-        "chat_id": chat_id,
-        "session_token": session_token,
-        "magic_invite_link": magic_invite_link
-    }
-
-@app.route('/api/authenticate', methods=['POST'])
-def authenticate():
-
-    chat_id = request.headers.get("chat_id")
-    user_name = request.headers.get("user_name")
-    magic_invite_link = request.headers.get("magic_invite_link")
-
-    if chat_id in chats:
-        if chats[chat_id]["magic_invite_link"] == magic_invite_link \
-           and len(chats[chat_id]["authorized_users"]) < 6:
-            session_token = generate_session_token()
-
-            # add to authorized_users
-            chats[chat_id]["authorized_users"][session_token] = {"username": user_name, 
-                                                                 "expires": datetime.datetime.now()
-                                                                            + datetime.timedelta(hours=6)}
-            return {"session_token": session_token}, 200
-    return "not valid", 400
-
-@app.route('/api/messages', methods=['GET', 'POST'])
-def messages():
-    # TODO: check if the request body contains a chat_id and valid session token for that chat
-    session_token = request.headers.get("session_token")
-    chat_id = request.headers.get("chat_id")
-
-    # send message
-    if request.method == 'POST':
-        if (session_token in chats[chat_id]["authorized_users"]):
-            user_name = chats[chat_id]["authorized_users"][session_token]["username"]
-            expiration_time = chats[chat_id]["authorized_users"][session_token]["expires"]
-            if (datetime.datetime.now() < expiration_time):
-                messages = chats[chat_id]["messages"]
-                new_message = request.headers.get("message")
-                if len(messages) >= 30:
-                    del messages[0]
-                messages.append(user_name + ": " + new_message)
-                return "Message sent", 200
-        return "Invalid", 400
-
-    # get message
-    if request.method == 'GET':
-        if (session_token in chats[chat_id]["authorized_users"]):
-            user_name = chats[chat_id]["authorized_users"][session_token]["username"]
-            expiration_time = chats[chat_id]["authorized_users"][session_token]["expires"]
-            if (datetime.datetime.now() < expiration_time):
-
-                messages = chats[chat_id]["messages"]
-
-                response = {
-                    "messages": messages,
-                    "magic_invite_link": chats[chat_id]["magic_invite_link"],
-                    "user_name": user_name
-                    }
-
-                return response, 200
-        return "Invalid", 400
 
 if __name__ == '__main__':
     app.run(debug=True)

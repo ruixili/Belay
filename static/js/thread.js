@@ -90,7 +90,7 @@ function sendThreadMessage() {
         type: "POST",
         url: "/api/sendthreadmessage",
         data: {
-            "email": localStorage.getItem("email"),
+            "email": email,
             "channelName": channelName,
             "message": message,
             "replyid": replyid
