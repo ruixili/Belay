@@ -29,7 +29,6 @@ CREATE TABLE messages(
     FOREIGN KEY (channelname) REFERENCES channels(channelname)
 );
 
-
 -- initialization
 INSERT INTO users VALUES("rxli@uchicago.edu", "admin", "123456", NOW());
 INSERT INTO channels VALUES("Cat", NOW());
