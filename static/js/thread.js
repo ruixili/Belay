@@ -6,6 +6,8 @@
 $("#thread-close-btn").click(function() {
     hideThreadPage();
     isThreadPageOpen = false;
+    let channelName = document.getElementById("chat-page-title-name").innerText;
+    firstLoadMessage(channelName);
 });
 
 $("#thread-page-send-btn").click(function() {

@@ -46,9 +46,7 @@ function createChannel(channelName) {
             getSidebarChannel();
         }
     });
-
 }
-
 
 function getSidebarChannel() {
     console.log("Loading channels");
@@ -92,6 +90,7 @@ function channelTemplate(channel) {
     template.setAttribute("id", "sidebar-channel-" + channel[0]);
     template.onclick = function() {
         document.getElementById("chat-page-title-name").innerText = channel[0];
+        window.push
         emptyChatArea();
         firstLoadMessage(channel[0]);
     }
@@ -107,6 +106,41 @@ function channelTemplate(channel) {
     return container
 }
 
+
+// get message count for background channel
+var curShowUnreadMessageCount;
+
+function showUnreadForOtherChannel(channelName) {
+  clearInterval(curShowUnreadMessageCount);
+  curShowUnreadMessageCount = setInterval(function() {
+    for (var cn in lastSeenMessageDict){
+        if (cn != channelName) {
+            // make other channels fetch message count
+            console.log("showUnreadMessageCount for Channel: " + cn + " lastMessageID: " + lastSeenMessageDict[cn]);
+            // channelName, lastSeenMessageID
+            showUnreadMessageCount(cn, lastSeenMessageDict[cn]);
+        }
+    }
+  }, 1000);
+}
+
+function showUnreadMessageCount(channelName, lastMessageID) {
+    $.ajax({
+        async: true,
+        type: "POST",
+        url: "/api/getunreadmessagecount",
+        data: {
+            "channelName": channelName,
+            "lastMessageID": lastMessageID
+        },
+        success: function(count) {
+            console.log("the messages from getunreadmessagecount api: " + count);
+            if (count) {
+                showUnreadOnSidebar(channelName, count);
+            }
+        }
+    });
+}
 
 function showUnreadOnSidebar(channelName, count) {
     let sidebarChannelCount = document.getElementById("sidebar-channel-unread-count-" + channelName);

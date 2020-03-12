@@ -27,7 +27,7 @@ $("#chat-page-more-message-btn").click(function() {
         },
         success: function(messages) {
             console.log("the messages from api" + messages);
-            if (!messages || messages.length == 0) {
+            if (!messages["content"] || messages["content"].length == 0) {
                 console.log("going to hide the btn");
                 hideMoremessage();
                 return;
@@ -56,6 +56,7 @@ function sendMessage() {
     let message = document.getElementById("chat-page-send-text-area").value;
 
     console.log("The user send a message to Channel: " + channelName + " : " + message);
+    console.log(channelName, email, message);
     $.ajax({
         async: true,
         type: "POST",
@@ -111,7 +112,7 @@ function firstLoadMessage(channelName) {
         },
         success: function(messages) {
             console.log("the messages from moremessage api: " + messages);
-            if (!messages || messages.length == 0) {
+            if (!messages || messages['content'].length == 0) {
                 hideMoremessage(channelName);
             } else {
                 storeLastSeenMessageID(channelName, messages['content']);
@@ -127,6 +128,7 @@ function firstLoadMessage(channelName) {
     });
 }
 
+var lastSeenMessageDict = {};
 
 // channels : {"sidebar-channel-Cat": 104}
 function storeLastSeenMessageID(channelName, messages) {
@@ -155,6 +157,24 @@ function insertWords(messages) {
             moreMessageDiv.parentNode.insertBefore(template, moreMessageDiv.nextSibling.nextSibling);
     }
 }
+
+function appendWords(messages) {
+    if (!messages) {
+        return;
+    }
+
+    var container = document.getElementById("chat-page-content-container");
+
+    for (var i = 0; i < messages["count"].length; i++) {
+        countDict[messages["count"][i][0]] = messages["count"][i][1];
+    }
+
+    for (var i = 0; i < messages['content'].length; i++) {
+        let template = messageTemplate(messages['content'][i], countDict);
+        container.append(template);
+    }
+}
+
 
 var isThreadPageOpen = false;
 
@@ -247,8 +267,8 @@ function getMessage(channelName) {
         },
         success: function(messages) {
             console.log("the messages from getmessage api: " + messages);
-            if (messages && messages.length != 0) {
-                storeLastSeenMessageID(channelName, messages);
+            if (messages && messages['content'] && messages['content'].length != 0) {
+                storeLastSeenMessageID(channelName, messages['content']);
                 appendWords(messages);
             }
         }
@@ -256,43 +276,6 @@ function getMessage(channelName) {
 
   }, 1000);
 }
-
-// get message count for background channel
-var curShowUnreadMessageCount;
-
-function showUnreadForOtherChannel(channelName) {
-  clearInterval(curShowUnreadMessageCount);
-  curShowUnreadMessageCount = setInterval(function() {
-    for (var cn in lastSeenMessageDict){
-        if (cn != channelName) {
-            // make other channels fetch message count
-            console.log("showUnreadMessageCount for Channel: " + cn + " lastMessageID: " + lastSeenMessageDict[cn]);
-            // channelName, lastSeenMessageID
-            showUnreadMessageCount(cn, lastSeenMessageDict[cn]);
-        }
-    }
-  }, 1000);
-}
-
-var lastSeenMessageDict = {};
-function showUnreadMessageCount(channelName, lastMessageID) {
-    $.ajax({
-        async: true,
-        type: "POST",
-        url: "/api/getunreadmessagecount",
-        data: {
-            "channelName": channelName,
-            "lastMessageID": lastMessageID
-        },
-        success: function(count) {
-            console.log("the messages from getunreadmessagecount api: " + count);
-            if (count) {
-                showUnreadOnSidebar(channelName, count);
-            }
-        }
-    });
-}
-
 
 // Image
 function getImageURLs(message) {
@@ -317,19 +300,3 @@ function hideMoremessage(channelName) {
     moreMessageDiv.style.display = "none";
     // nomoreMessageDiv.style.display = "block";
 }
-
-
-function appendWords(messages) {
-    if (!messages) {
-        return;
-    }
-
-    var container = document.getElementById("chat-page-content-container");
-
-    for (var i = 0; i < messages.length; i++) {
-        let template = messageTemplate(messages[i], countDict);
-        container.append(template);
-        console.log(messages[i]);
-    }
-}
-

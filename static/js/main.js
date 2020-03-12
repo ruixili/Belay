@@ -61,7 +61,7 @@ $("#login-login-btn").click(function() {
                     window.setTimeout(
                         function() {
                             resolve("Success!");
-                        }, 1000);
+                        }, 2000);
                 })
 
                 loadPage.then((successMessage) => {

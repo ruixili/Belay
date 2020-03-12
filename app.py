@@ -4,9 +4,12 @@ import string
 import random
 import datetime
 import manager
+import configparser
+import io
 
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
 db_manager = manager.dbManager()
 
 # helper functions
@@ -124,10 +127,11 @@ def moremessage():
 @app.route('/api/postmessage', methods=['POST'])
 def postmessage():
     if request.cookies['cookie'] not in session_tokens:
+        print("----- request.cookies['cookie'] not in session_tokens")
         return "", 401
-    # print("----- calling postmessage method!")
+    print("----- calling postmessage method!")
     message = {key: request.form.get(key) for key in request.form}
-    # print(message)
+    print(message)
     result = db_manager.postMessage(message)
     return jsonify(result)
 

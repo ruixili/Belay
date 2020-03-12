@@ -1,11 +1,11 @@
 import mysql.connector
 import datetime
 import bcrypt
-
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-
+import configparser
+import io
 
 def forgetPassword(user):
     # check if email exists?
@@ -31,10 +31,17 @@ def hashPassword(user):
     user['password'] = hashed
     return user
 
+config = configparser.ConfigParser()
+config.read('secrets.cfg')
+DB_NAME = config['secrets']['DB_NAME']
+DB_USERNAME = config['secrets']['DB_USERNAME']
+DB_PASSWORD = config['secrets']['DB_PASSWORD']
+
+
 
 class dbManager:
     def connectDB(self):
-        conn = mysql.connector.connect(user="root", database="rxli", password="1liruixi")
+        conn = mysql.connector.connect(user=DB_USERNAME, database=DB_NAME, password=DB_PASSWORD)
         # if conn:
         #     print("Connected to database!")
         return conn
@@ -208,8 +215,16 @@ class dbManager:
         query = "SELECT u.username, m.id, m.timestamp, m.text FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.channelname = (%s) AND m.replyid IS NULL AND m.id > (%s) ORDER BY m.id DESC"
         try:
             cursor.execute(query, (channel["channelName"],channel['lastMessageID']))
-            messages = cursor.fetchall()
-            print(messages)
+            messages = {"content":cursor.fetchall()}
+            print("-----------message from getMessage api", messages)
+
+            # get message count
+            query = "SELECT replyid, COUNT(*) AS cnt FROM messages WHERE channelname = (%s) GROUP BY replyid"
+            cursor.execute(query, (channel["channelName"],))
+            count = cursor.fetchall()
+            messages["count"] = count
+
+            print("-----------message from getMessage api", messages)
             return messages
         except Exception as e:
             print(e)
@@ -222,7 +237,7 @@ class dbManager:
         print("calling getUnreadMessageCount")
         conn = self.connectDB()
         cursor = conn.cursor()
-        query = "SELECT COUNT(*) FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.channelname = (%s) AND m.id > (%s)"
+        query = "SELECT COUNT(*) FROM messages m LEFT JOIN users u ON m.email = u.email WHERE m.channelname = (%s) AND m.replyid IS NULL AND m.id > (%s)"
         try:
             print(channel["channelName"], channel['lastMessageID'])
             cursor.execute(query, (channel["channelName"], channel['lastMessageID']))

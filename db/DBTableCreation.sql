@@ -1,5 +1,5 @@
-DROP DATABASE IF EXISTS rxli;
-CREATE DATABASE belay CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;;
+-- sudo mysql -u root < DBTableCreation.sql
+
 USE rxli;
 
 CREATE TABLE users
@@ -13,7 +13,6 @@ CREATE TABLE users
 
 CREATE TABLE channels(
     channelname VARCHAR(60) NOT NULL,
-    creator VARCHAR(60) NOT NULL,
     timestamp DATETIME DEFAULT NOW(),
     PRIMARY KEY (channelname)
 );
