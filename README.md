@@ -1,4 +1,21 @@
-# Configuration
+# Belay: A Universal and Real-Time Chat Room
+## Demo
+
+### Login Page
+![img](https://github.com/ruixili/Belay/blob/master/demo/LoginPage.png)
+### Forget Password Page
+![img](https://github.com/ruixili/Belay/blob/master/demo/ForgetPassword.png)
+### Sign Up Page
+![img](https://github.com/ruixili/Belay/blob/master/demo/RegisterNewAccount.png)
+### Chat Page
+![img](https://github.com/ruixili/Belay/blob/master/demo/ChatPage.png)
+### Create New Channel
+![img](https://github.com/ruixili/Belay/blob/master/demo/CreateNewChannel.png)
+### Thread Message
+![img](https://github.com/ruixili/Belay/blob/master/demo/Thread.png)
+
+
+## Configuration
 
 1. install all needed packages
 
@@ -15,3 +32,5 @@
 
 `python -m flask run -p 5000`
 
+## Future Improvement
+- Implement front-end using React.
