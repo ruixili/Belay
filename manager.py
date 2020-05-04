@@ -26,8 +26,7 @@ def forgetPassword(user):
         return "Unable to send email!"
 
 def hashPassword(user):
-    salt = bcrypt.gensalt(9)
-    hashed = bcrypt.hashpw(user['password'].encode('utf-8'), salt)
+    hashed = bcrypt.hashpw(user['password'].encode('utf-8'), bcrypt.gensalt(9))
     user['password'] = hashed
     return user
 
@@ -57,12 +56,15 @@ class dbManager:
             data = cursor.fetchall()
             print(data)
             print(len(data))
-            print(user['password'])
+            print(user['password'].encode('utf-8'))
             print(data[0][2])
             success = bcrypt.checkpw(user['password'].encode('utf-8'), data[0][2].encode('utf-8'))
-            if len(data) == 1 and success:
-                print("It's true!")
+            print(success)
+
+            if success:
                 return data
+            return {}, 404
+
         except Exception as e:
             print(e)
             return "Fail to login!"

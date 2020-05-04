@@ -60,12 +60,12 @@ $("#login-login-btn").click(function() {
                     getSidebarChannel();
                     window.setTimeout(
                         function() {
-                            resolve("Success!");
+                            resolve(repsonse);
                         }, 2000);
                 })
 
-                loadPage.then((successMessage) => {
-
+                loadPage.then((repsonse) => {
+                    console.log("--------successMessage" + repsonse['data']);
                     let welcomeUsername = document.getElementById("sidebar-welcome-username");
                     welcomeUsername.innerText = "Username: " + repsonse['data'][0][1]; 
                     let welcomeEmail = document.getElementById("sidebar-welcome-email");
