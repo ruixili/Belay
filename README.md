@@ -1,4 +1,7 @@
 # Belay: A Universal and Real-Time Chat Room
+### MPCS 52553: Web Development
+### Ruixi Li
+
 ## Demo
 
 ### Login Page
